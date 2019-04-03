@@ -1,7 +1,9 @@
-var margin = {top: 10, bottom: 10, left: 10, right: 10, between: 30, sm_between: 10};
-var height = 550 - margin.top - margin.bottom,
+var margin = {top: 10, bottom: 10, left: 10, right: 10, between: 50, sm_between: 20};
+var height = 700 - margin.top - margin.bottom,
   width = 1200 - margin.left - margin.right;
 var groupCamWidth = (width - margin.between) / 2, groupCamHeight = height;
+var mainCamWidth = 400, mainCamHeight = 400;
+var subCamWidth = 100, subCamHeight = 100;
 
 var svg = d3.select("#svg_div")
   .append("svg")
@@ -17,26 +19,42 @@ var studyCam = svg.append("g")
 
 function addGradView(container, cam_paths, id_prefix) {
   
-  sub_cam_start = (groupCamWidth / 2) - (100+10+100+5)
+  var subCamStartX = (groupCamWidth / 2) - (subCamWidth + 
+    margin.sm_between + subCamWidth + margin.sm_between/2),
+    subCamStartY = 10 + mainCamHeight + 30,
+    selectedImg = 3;
 
-  for (i = 0; i < 6; ++i) {
+  container.append("line")
+    .attr("x1", subCamStartX - 10)
+    .attr("y1", subCamStartY + subCamHeight + 10)
+    .attr("x2", groupCamWidth - subCamStartX + 10)
+    .attr("y2", subCamStartY + subCamHeight + 10)
+    .attr("stroke-width", 1)
+    .attr("stroke", "black");
+
+  for (i = 0; i < 5; ++i) {
     console.log("loop", i);
 
     if (i == 0) {
       var cam_name = "_MAIN",
-        cam_size = {h: 350, w: 350},
+        cam_size = {h: mainCamHeight, w: mainCamWidth},
         cam_pos = {x: (groupCamWidth - cam_size.w) / 2, y: 10},
         cam_class = "color",
-        cam_path = cam_paths[3];
+        cam_path = cam_paths[selectedImg];
     } else {
       var cam_name = "_SUB_" + i,
-        cam_size = {h: 100, w: 100},
-        cam_pos = {x: sub_cam_start + ((i-1) * 110), y: 10 + 350 + 10},
-        cam_class = "gray",
+        cam_size = {h: subCamHeight, w: subCamWidth},
+        cam_pos = {x: subCamStartX + ((i-1) * (subCamWidth + margin.sm_between)), 
+          y: subCamStartY},
         cam_path = cam_paths[i - 1];
+
+      if ((i - 1) == selectedImg)
+        var cam_class = "color";
+      else
+        var cam_class = "gray";
     }
 
-    container.append("svg:image")
+    container.append("image")
       .attr("id", id_prefix + cam_name)
       .attr("class", cam_class)
       .attr("height", cam_size.h).attr("width", cam_size.w)
