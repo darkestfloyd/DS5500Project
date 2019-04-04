@@ -1,3 +1,4 @@
+var logger = 0;
 // define some dimensions
 var margin = {top: 10, bottom: 10, left: 10, right: 10, between: 150, sm_between: 20};
 var height = 900 - margin.top - margin.bottom,
@@ -79,7 +80,27 @@ function addGradView(container, cam_paths, id_prefix) {
       .attr("class", cam_class)
       .attr("height", cam_size.h).attr("width", cam_size.w)
       .attr("xlink:href", cam_path)
-      .attr("x", cam_pos.x).attr("y", cam_pos.y);
+      .attr("x", cam_pos.x).attr("y", cam_pos.y)
+      .on("click", function(_, __, obj) { // on click
+        obj = obj[0]
+        cam = obj.id.slice(0, 8)
+        selected = +obj.id[obj.id.length - 1];
+        console.log("#" + cam + "_MAIN");
+
+        // update main cam
+        d3.select("#" + cam + "_MAIN")
+          .attr("xlink:href", obj.href.baseVal);
+
+        // update grayscale
+        for (i = 1; i < 5; ++i) {
+          var s = d3.select("#" + cam + "_SUB_" + i);
+          if (i == selected)
+            s.attr("class", "color");
+          else
+            s.attr("class", "gray")
+        }
+
+      });
 
     // if small multiple, also add its iteration
     if (i > 0) {
