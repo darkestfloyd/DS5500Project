@@ -1,0 +1,3 @@
+start a python3 server in this folder to see preview
+
+`python3 -m http.server`
