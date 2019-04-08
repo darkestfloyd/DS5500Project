@@ -36,9 +36,6 @@ class DenseNetViz(Resource):
                                             y_pred = model.Body_Prediction))
             nodes = self.generateNodes(model)
             links = self.generateLinks(model)
-            results = {'nodes': nodes, 'links': links}
-            
-            return results
             
         #view abnormal flow for correctly classified points
         if(view == 'classified'):
@@ -47,7 +44,6 @@ class DenseNetViz(Resource):
             self.accuracy_part = 1
             nodes = self.generateNodes(_model)
             links = self.generateLinks(_model)
-            return results
        
         #view flow of all misclassififed points
         if(view == 'misclassified'):
