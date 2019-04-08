@@ -16,7 +16,7 @@ class AlexNetViz(Resource):
 
         links = []
         nodes = [{'name' : 'Input',
-                'color' : self.color[7]}]
+                'color' : self.color['Input']}]
         for i, df in enumerate(self.data.values()):
              if i%16 != 0:
                  continue
@@ -25,14 +25,14 @@ class AlexNetViz(Resource):
              accuracy = float(accuracy_score(y_true = df.Body_Label, y_pred = df.Body_Prediction))
              #construct node dictionary 
              nodes.extend([{'name' : self.body_parts[pred_label],
-                 'color' : self.color[pred_label],
+                 'color' : self.color[self.body_parts[pred_label]],
                  'accuracy' : accuracy}])
              #construct link dictionary 
              links.extend([{'source' : 0,
                   'target' : pred_label+1,
                  'value' : 1,
                  'count' : int(label_counts[label]),
-                 'color' : self.color[label]
+                 'color' : self.color[self.body_parts[label]]
                  }for label in label_counts.keys()])
         results = {'nodes' : nodes, 'links' : links}
         return results

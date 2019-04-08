@@ -6,6 +6,7 @@ import pandas as pd
 import glob
 import numpy as np
 from resources.AlexNetViz import AlexNetViz
+from resources.DenseNetViz import DenseNetViz
 
 app = Flask(__name__)
 api = Api(app)
@@ -16,29 +17,40 @@ if __name__ == '__main__':
     models =  ['Model'+str(i) for i in np.arange(1,17)]
     body_parts = ['Shoulder', 'Humerus', 'Finger', 'Elbow', 'Wrist', 'Forearm', 'Hand']
     filename = 'abnormal_results.csv'
-    color = ["#d73027", "#fc8d59", "#fee090", "#ffffbf", "e0f3f8", "91bfdb", "4575b4", "#999999"]
+    color = {'Shoulder' : '#d73027', 
+            'Humerus' : '#fc8d59', 
+            'Finger' : '#fee090', 
+            'Elbow' : '#ffffbf', 
+            'Wrist' : 'e0f3f8', 
+            'Forearm' : '91bfdb', 
+            'Hand' : '4575b4', 
+            'Input' : '#999999',
+            'Normal' : '#5ab4ac',
+            'Abnormal' : '#d8b365l'}
     data = {}
 
     #read model results
     for part in body_parts:
         for model in models:
             pathname = os.path.join(path, part, model, filename)
-            data[part+'_'+model] = pd.read_csv(pathname)
-    
+            name = part + '_' + model
+            data[name] = pd.read_csv(pathname)
+            data[name].rename(columns = {'Abormal_Prediction' : 'Abnormal_Prediction'},
+                inplace = True)
+
     #add resources 
     api.add_resource(AlexNetViz, 
             '/main',
             resource_class_kwargs={'data' : data,                                   
                 'body_parts' : body_parts,
                 'color' : color});
+    
     api.add_resource(DenseNetViz, 
-            '/main/model=<model>/view=<view>',
-            '/main/model=<model>/view=<view>/part=<part>',
+            '/main/<string:predPart>/model=<model>/view=<view>',
+            '/main/<string:predPart>/model=<model>/view=<view>/<string:truePart>',
             resource_class_kwargs={'data' : data,                                   
                 'body_parts' : body_parts,
                 'color' : color});
-
-
 
     app.run(debug = True)
 
