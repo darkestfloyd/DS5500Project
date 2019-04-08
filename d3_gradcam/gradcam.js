@@ -1,8 +1,8 @@
 var logger = 0;
 // define some dimensions
-var margin = {top: 10, bottom: 10, left: 10, right: 10, between: 150, sm_between: 20};
-var height = 900 - margin.top - margin.bottom,
-  width = 1200 - margin.left - margin.right;
+var margin = {top: 10, bottom: 10, left: 10, right: 10, between: 70, sm_between: 20};
+var height = 780 - margin.top - margin.bottom,
+  width = 1100 - margin.left - margin.right;
 var groupCamWidth = (width - margin.between) / 2, groupCamHeight = height;
 var mainCamWidth = 400, mainCamHeight = 400;
 var subCamWidth = 100, subCamHeight = 100;
@@ -14,7 +14,7 @@ var svg = d3.select("#svg_div")
   .attr("height", height)
   .attr("width", width)
   .append("g")
-  .attr("transform", `translate(${margin.left}, ${margin.top})`)
+  .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 // this function will add a "GradCamView" to a container. This includes the main image with the
 // small multiples and all the related text. 
@@ -143,8 +143,12 @@ addGradView(studyCam, studyCam_paths, "studyCam", "Study Type Prediction", "Hand
 // add and populate class cam container
 var classCam = svg.append("g")
   .attr("id", "class_svg")
-  .attr("transform", `translate(${groupCamWidth + margin.between}, 100)`);
+  .attr("transform", `translate(${groupCamWidth + margin.between}, 0)`);
 
 var classCam_paths = ["cams/CAM1_5.jpg", "cams/CAM1_10.jpg", "cams/CAM1_15.jpg", 
   "cams/CAM1_20.jpg"]
 addGradView(classCam, classCam_paths, "classCam", "Class Type Prediction", "Abnormal", "Normal");
+
+// svg.append("g")
+  // .attr("transform", `translate(${width/2 - 30}, 100)`)
+  // .append("button").attr("id", "generate");
