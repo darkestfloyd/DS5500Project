@@ -1,0 +1,19 @@
+To view DenseNet classification Jsons:
+
+Run app.py : python app.py
+
+Url format:
+http://127.0.0.1:5000/main/<string:predictedPart>/model=<modelNumber>/view=<view>/<string:truePart> 
+
+Placeholders:
+<string:predictedPart>, <string:truePart> = Part in ['Shoulder', 'Humerus', 'Finger', 'Elbow', 'Wrist', 'Forearm', 'Hand']
+<modelNumber> = 0 for best/default model; integer in [1,16] otherwise
+<view> = 'all' to view flow of classifed and misclassified inputs
+	 'classified' to view correctly classifed results only
+	 'misclassified' to view incorrectly classified inputs (requires truePart to be specified)
+<string:truePart> = 'all' to view all misclassifed inputs
+		     Part in ['Shoulder', 'Humerus', 'Finger', 'Elbow', 'Wrist', 'Forearm', 'Hand'] otherwise
+
+ex urls :http://127.0.0.1:5000/main/Elbow/model=3/view=all
+	 http://127.0.0.1:5000/main/Elbow/model=3/view=classified
+	 http://127.0.0.1:5000/main/Elbow/model=3/view=misclassified/Forearm
