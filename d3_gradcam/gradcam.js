@@ -26,11 +26,12 @@ var svg = d3.select("#svg_div")
 //    main img is of the form "id_prefix_MAIN"
 //    sub image, is based on iter and in sequence "id_prefix_SUB_i" where i is image number from
 //      left, stating at 1 [_SUB_1 to _SUB_4]
-function addGradView(container, cam_paths, id_prefix) {
+function addGradView(container, cam_paths, id_prefix,
+              title, label_pred, label_true) {
   
   var subCamStartX = (groupCamWidth / 2) - (subCamWidth + 
     margin.sm_between + subCamWidth + margin.sm_between/2),
-    subCamStartY = 10 + mainCamHeight + 30,
+    subCamStartY = 100 + mainCamHeight + 30,
     selectedImg = 3;
 
   // add the line acting as x axis
@@ -49,6 +50,21 @@ function addGradView(container, cam_paths, id_prefix) {
       .attr("font-size", "18px")
       .text(function(d) { return "Iteration"; });
 
+  // add title text
+  container.append("text")
+      .attr("y", 45) 
+      .attr("x", (groupCamWidth / 2) - 4.8 * title.length)
+      .attr("font-size", "18px")
+      .text(function(d) { return title; });
+
+  // add other text
+  ttext = "True: " + label_true + "; Pred: " + label_pred; 
+  container.append("text")
+      .attr("y", 70)
+      .attr("x", (groupCamWidth / 2) - 5 * ttext.length)
+      .attr("font-size", "18px")
+      .text(function(d) { return "True: " + label_true + "; Pred: " + label_pred; });
+
   // add each image in this loop, 0 is main image, 1,2,3,4 are small multiples
   for (i = 0; i < 5; ++i) {
 
@@ -56,7 +72,7 @@ function addGradView(container, cam_paths, id_prefix) {
       // 0 is main, do main related stuff
       var cam_name = "_MAIN",
         cam_size = {h: mainCamHeight, w: mainCamWidth},
-        cam_pos = {x: (groupCamWidth - cam_size.w) / 2, y: 10},
+        cam_pos = {x: (groupCamWidth - cam_size.w) / 2, y: 100},
         cam_class = "color",
         cam_path = cam_paths[selectedImg];
     } else {
@@ -118,11 +134,11 @@ function addGradView(container, cam_paths, id_prefix) {
 // adds a container for the left gradcam and populate
 var studyCam = svg.append("g")
   .attr("id", "study_svg")
-  .attr("transform", `translate(0, 100)`);
+  .attr("transform", `translate(0, 0)`);
 
 var studyCam_paths = ["cams/CAM0_5.jpg", "cams/CAM0_10.jpg", "cams/CAM0_15.jpg", 
   "cams/CAM0_20.jpg"]
-addGradView(studyCam, studyCam_paths, "studyCam");
+addGradView(studyCam, studyCam_paths, "studyCam", "Study Type Prediction", "Hand", "Leg");
 
 // add and populate class cam container
 var classCam = svg.append("g")
@@ -131,4 +147,4 @@ var classCam = svg.append("g")
 
 var classCam_paths = ["cams/CAM1_5.jpg", "cams/CAM1_10.jpg", "cams/CAM1_15.jpg", 
   "cams/CAM1_20.jpg"]
-addGradView(classCam, classCam_paths, "classCam");
+addGradView(classCam, classCam_paths, "classCam", "Class Type Prediction", "Abnormal", "Normal");
