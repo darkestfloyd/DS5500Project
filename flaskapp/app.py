@@ -1,5 +1,6 @@
 from flask import Flask, Request, Response, render_template, jsonify, json
 from flask_restful import Resource, Api, reqparse
+from flask_cors import CORS
 import os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import pandas as pd
@@ -10,6 +11,7 @@ from resources.DenseNetViz import DenseNetViz
 
 app = Flask(__name__)
 api = Api(app)
+CORS(app)
 
 if __name__ == '__main__':
     
