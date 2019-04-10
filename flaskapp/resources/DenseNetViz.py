@@ -17,7 +17,7 @@ class DenseNetViz(Resource):
         self.links = []
         self.cm = {}
 
-    def get(self, predPart, model = 0, view = 'all', truePart = 'all'):
+    def get(self, predPart, model = 0, view = 'all', truePart = 'none'):
         
         self.predPart = predPart
         self.truePart = truePart
@@ -38,6 +38,7 @@ class DenseNetViz(Resource):
             
             self.accuracy_part = float(accuracy_score(y_true = model.Body_Label,
                                             y_pred = model.Body_Prediction))
+            self.truePart = self.predPart
             self.generateNodes(model)
             self.generateLinks(model)
             
@@ -92,9 +93,9 @@ class DenseNetViz(Resource):
                       'parts' : other}]
         else: 
             #set node dictionary  
-            self.nodes = [{self.nkeys[0] : self.truePart,                                       #name
+            self.nodes = [{self.nkeys[0] : self.truePart,                              #name
                       self.nkeys[1] : self.color[self.truePart],                       #color
-                      self.nkeys[2] : self.accuracy_part}]                            #accuracy
+                      self.nkeys[2] : self.accuracy_part}]                             #accuracy
         
 
         self.nodes.extend([
