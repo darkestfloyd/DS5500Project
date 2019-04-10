@@ -142,7 +142,7 @@ BodyParticles.prototype.addNodes = function() {
 		    				.attr("name", function(d) { return d.name; })
 		      				.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
 		      				.on("click", function(d) {
-								dispatch.nodeClicked(_this, d);
+								dispatch.nodeClicked(d);
 							})
 							.on("mouseover", function(d) {
 								d3.select(".tooltip").transition()
@@ -226,8 +226,8 @@ BodyParticles.prototype.move = function() {
 	}
 }
 
-dispatch.on("nodeClicked.particles", function(_main, _this) {
-	if(_main.particles.length == 0) {
+dispatch.on("nodeClicked.particles", function(_this) {
+	//if(_main.particles.length == 0) {
 		var modelId = d3.selectAll("[name=" + _this.name + "][stroke=" + config.graph.bestLineColor + "]").attr("index");
 		d3.json("http://127.0.0.1:5000/main/" + _this.name + "/model=" + modelId + "/view=all", function(data) {
 		//d3.json("data/" + _this.name.toLowerCase() + "-" + modelId + ".json", function(data) {
@@ -244,5 +244,5 @@ dispatch.on("nodeClicked.particles", function(_main, _this) {
 			var p = new NormalParticles(opts);
 			p.draw();
 		});
-	}
+	//}
 });
