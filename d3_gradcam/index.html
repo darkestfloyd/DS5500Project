@@ -16,12 +16,81 @@
       </style>
   </head>
 
-  <body bgcolor="#696969">
+  <body bgcolor="#bdbdbd">
      <!-- bgcolor is only because white hurts my eyes :P --> 
-    <div id="svg_div" style="text-align:center;">
+     <div>
+       <!-- buttons -->
+       <div style="float: left;width: 10%;margin-top: 200;margin-left: 30;">
+         <select>
+          <option value="all">All studies</option>
+          <option value="finger">Finger</option>
+          <option value="hand">Hand</option>
+          <option value="wrist">Wrist</option>
+          <option value="forearm">Forearm</option>
+          <option value="elbow">Elbow</option>
+          <option value="humerus">Humerus</option>
+          <option value="shoulder">Shoulder</option>
+
+        </select> 
+        <br>
+        <button style="margin-top: 10;" onclick="generate_cams()">
+          Generate
+        </button>
+       </div>    
+       <!-- cams -->
+      <div id="svg_div" style="text-align:center;">
     </div>
+     </div>
   </body>
 
   <script src="gradcam.js"></script>
+
+  <!-- button hanler -->
+  <script>
+    var clicked = 0;
+    function generate_cams() {
+      if (clicked == 0) {
+        clicked = 1;
+
+        // study
+        d3.select("#studyCam_MAIN").attr('xlink:href', 'cams/alex/CAM0_20.jpg');
+        d3.select("#studyCam_SUB_1").attr('xlink:href', 'cams/alex/CAM0_5.jpg');
+        d3.select("#studyCam_SUB_2").attr('xlink:href', 'cams/alex/CAM0_10.jpg');
+        d3.select("#studyCam_SUB_3").attr('xlink:href', 'cams/alex/CAM0_15.jpg');
+        d3.select("#studyCam_SUB_4").attr('xlink:href', 'cams/alex/CAM0_20.jpg');
+
+        // class
+        d3.select("#classCam_MAIN").attr('xlink:href', 'cams/dense/CAM2_20.jpg');
+        d3.select("#classCam_SUB_1").attr('xlink:href', 'cams/dense/CAM2_5.jpg');
+        d3.select("#classCam_SUB_2").attr('xlink:href', 'cams/dense/CAM2_10.jpg');
+        d3.select("#classCam_SUB_3").attr('xlink:href', 'cams/dense/CAM2_15.jpg');
+        d3.select("#classCam_SUB_4").attr('xlink:href', 'cams/dense/CAM2_20.jpg');
+        
+        // subtitle
+        d3.select("#studyCam_subtitle").text("True: Forearm; Pred: Elbow");
+        d3.select("#classCam_subtitle").text("True: Normal; Pred: Normal");
+      } else {
+        clicked = 0;
+
+        // study
+        d3.select("#classCam_MAIN").attr('xlink:href', 'cams/CAM1_20.jpg');
+        d3.select("#classCam_SUB_1").attr('xlink:href', 'cams/CAM1_5.jpg');
+        d3.select("#classCam_SUB_2").attr('xlink:href', 'cams/CAM1_10.jpg');
+        d3.select("#classCam_SUB_3").attr('xlink:href', 'cams/CAM1_15.jpg');
+        d3.select("#classCam_SUB_4").attr('xlink:href', 'cams/CAM1_20.jpg');
+
+        // class
+        d3.select("#studyCam_MAIN").attr('xlink:href', 'cams/CAM0_20.jpg');
+        d3.select("#studyCam_SUB_1").attr('xlink:href', 'cams/CAM0_5.jpg');
+        d3.select("#studyCam_SUB_2").attr('xlink:href', 'cams/CAM0_10.jpg');
+        d3.select("#studyCam_SUB_3").attr('xlink:href', 'cams/CAM0_15.jpg');
+        d3.select("#studyCam_SUB_4").attr('xlink:href', 'cams/CAM0_20.jpg');
+
+        // subtitle
+        d3.select("#studyCam_subtitle").text("True: Hand; Pred: Hand");
+        d3.select("#classCam_subtitle").text("True: Normal; Pred: Abnormal");
+      }
+    }
+  </script>
 
 </html>

@@ -139,4 +139,4 @@ class DenseNetViz(Resource):
                      self.lkeys[1] : int(abn)+1,                                        #tagert
                      self.lkeys[2] : 1,                                                 #value
                      self.lkeys[3] : int(part_abnormality[part, abn]),                  #count
-                     self.lkeys[4] : self.color[self.classes[abn]}])                   #color
+                     self.lkeys[4] : self.color[self.classes[abn]]}])                   #color
