@@ -1,0 +1,213 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.9/d3.min.js" type="text/javascript"></script>
+		<script src="js/d3.sankey.js" type="text/javascript"></script>
+
+		<link rel="stylesheet" href="css/style.css" />
+	</head>
+	<body>
+		<div class="container">
+			<div class="modal" tabindex="-1" role="dialog">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title">What is MURA?</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+			        <p>MURA (musculoskeletal radiographs) is a large dataset of bone X-rays. Algorithms are tasked with determining whether an X-ray study is normal or abnormal.</p>
+			      </div>
+			      <div class="modal-footer">
+			        <button id="prev" type="button" class="btn btn-primary">Previous</button>
+			        <button id="next" type="button" class="btn btn-primary">Next</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+			<center><h1> MURA </h1></center>
+			<div class="row">
+				<div class="container container-fluid">
+					<div class="row">
+						<div class="col-md-7">
+							<div class="row">
+								<div class="col-md-6" id="particle-viz"></div>
+								<div class="col-md-6" id="particle-focus-viz"></div>
+							</div>
+						</div>
+						<div id="confusion-and-graphs" class="col-md-5">
+							<div class="row">
+								<div class="col-md-12">
+									<div id="table-container" style="position:relative">
+										<table style="display:none;" class="table table-bordered">
+											<tr>
+												<td rowspan="4" style="vertical-align : middle;text-align:center;">Actual</td>
+												<td colspan="3" align="center">Predicted</td>
+											</tr>
+											<tr>
+												<td>#</td>
+												<td>T</td>
+												<td>F</td>
+											</tr>
+											<tr>
+												<td>T</td>
+												<td id="tt">10.1</td>
+												<td id="tf">10.2</td>
+											</tr>
+											<tr>
+												<td>F</td>
+												<td id="ft">20.3</td>
+												<td id="ff">20.4</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<div id="graphs" class="col-md-12 overlap-1">
+										<div class="row">
+												<div id="elbow-graph" class="col-md-4">
+												</div>
+												<div id="finger-graph" class="col-md-4">
+												</div>
+												<div id="forearm-graph" class="col-md-4">
+												</div>
+										</div>
+										<div class="row">
+											<div id="hand-graph" class="col-md-4">
+											</div>
+											<div id="humerus-graph" class="col-md-4">
+											</div>
+											<div id="shoulder-graph" class="col-md-4">
+											</div>
+										</div>
+										<div class="row">
+											<div id="wrist-graph" class="col-md-4">
+											</div>
+										</div>
+									</div>
+									<div class="col-md-12 my-10 overlap overlap-2">
+										<center><h6 id="max-title"></h6></center>
+										<center><h6 class="minus" style="display: none;">[-]</h6></center>
+										<div id="maximize-graph">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/config.js"></script>
+	<script type="text/javascript" src="js/dispatch.js"></script>
+	<script type="text/javascript" src="js/particle.js"></script>
+	<script type="text/javascript" src="js/classifier.js"></script>
+	<script type="text/javascript" src="js/graph.js"></script>
+	<script type="text/javascript">
+		
+		var onLoad = function() {
+			// particles
+			d3.json("data/graph.json", function(data) {
+				var opts = {
+					data: data,
+					width: config.particles.width,
+					height: config.particles.height,
+					margin: config.particles.margin,
+					element: config.particles.element
+				};
+				particles = new BodyParticles(opts);
+				particles.draw();
+			});
+
+
+
+			// models
+			d3.json("data/models.json", function(data) {
+				var parts = config.parts;
+				parts.forEach(function(v, i) {
+					var element = "#" + v.toLowerCase() + "-graph";	
+
+					var opts = {
+						data : data[v.toLowerCase()].points,
+						element: element,
+						width: config.graph.width,
+						height: config.graph.height,
+						lineColor: config.graph.lineColor,
+						bestLineColor: config.graph.bestLineColor,
+						name: v,
+						margin: config.graph.margin,
+						best: data[v.toLowerCase()].best,
+						type: "thumb"
+					};
+
+					var graph = new Graph(opts);
+				});
+			});
+		}
+		
+	</script>
+	<script type="text/javascript">
+		var wizard = [
+		{"title": "What is MURA?", "body": "<p>MURA (musculoskeletal radiographs) is a large dataset of bone X-rays. Algorithms are tasked with determining whether an X-ray study is normal or abnormal.</p>"},
+		{"title": "What are you about to see?", "body": "<p>A visualization which provides on overview of different models to solve the classification problem.</p>"},
+		{"title": "Confusion Matrix", "body": "<img src='img/cf.png' class='img-fluid'> How well the body parts were classified as normal or abnormal."},
+		{"title": "Models", "body": "<img src='img/graphs.png' class='img-fluid'> How the training accuracy changes with each iteration"},
+		{"title": "Particles", "body": "<img src='img/particles.png' class='img-fluid'> Out of all classified parts, how many are actually classified correctly"}
+		];
+		var loadModal = function(current) {
+			$(".modal-title").html(wizard[current].title);
+			$(".modal-body").html(wizard[current].body);
+		}
+		var checkOptions = function(current) {
+			if(current > 0) {
+				d3.select("#prev").style("display", "block");
+			} else {
+				d3.select("#prev").style("display", "none");
+			}
+
+			if(current < wizard.length-1) {
+				d3.select("#next").style("display", "block");
+			} else {
+				d3.select("#next").style("display", "none");
+			}
+		}
+		$(document).ready(function() {
+			var current = 0;
+			loadModal(current);
+			checkOptions(current);
+			$(".modal").modal("show");
+
+			$("#next").click(function() {
+				if(current < wizard.length) {
+					current = current + 1;
+					checkOptions(current);
+					loadModal(current);
+				}
+			});
+
+			$("#prev").click(function() {
+				if(current > -1) {
+					current = current - 1;
+					checkOptions(current);
+					loadModal(current);
+				}
+			});
+
+
+			$('.modal').on("hidden.bs.modal", function () {
+    			onLoad();
+			})
+		});
+	</script>
+</html>
