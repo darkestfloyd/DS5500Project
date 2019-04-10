@@ -47,7 +47,49 @@
 
   <!-- button hanler -->
   <script>
+    var clicked = 0;
     function generate_cams() {
+      if (clicked == 0) {
+        clicked = 1;
+
+        // study
+        d3.select("#studyCam_MAIN").attr('xlink:href', 'cams/alex/CAM0_20.jpg');
+        d3.select("#studyCam_SUB_1").attr('xlink:href', 'cams/alex/CAM0_5.jpg');
+        d3.select("#studyCam_SUB_2").attr('xlink:href', 'cams/alex/CAM0_10.jpg');
+        d3.select("#studyCam_SUB_3").attr('xlink:href', 'cams/alex/CAM0_15.jpg');
+        d3.select("#studyCam_SUB_4").attr('xlink:href', 'cams/alex/CAM0_20.jpg');
+
+        // class
+        d3.select("#classCam_MAIN").attr('xlink:href', 'cams/dense/CAM2_20.jpg');
+        d3.select("#classCam_SUB_1").attr('xlink:href', 'cams/dense/CAM2_5.jpg');
+        d3.select("#classCam_SUB_2").attr('xlink:href', 'cams/dense/CAM2_10.jpg');
+        d3.select("#classCam_SUB_3").attr('xlink:href', 'cams/dense/CAM2_15.jpg');
+        d3.select("#classCam_SUB_4").attr('xlink:href', 'cams/dense/CAM2_20.jpg');
+        
+        // subtitle
+        d3.select("#studyCam_subtitle").text("True: Forearm; Pred: Elbow");
+        d3.select("#classCam_subtitle").text("True: Normal; Pred: Normal");
+      } else {
+        clicked = 0;
+
+        // study
+        d3.select("#classCam_MAIN").attr('xlink:href', 'cams/CAM1_20.jpg');
+        d3.select("#classCam_SUB_1").attr('xlink:href', 'cams/CAM1_5.jpg');
+        d3.select("#classCam_SUB_2").attr('xlink:href', 'cams/CAM1_10.jpg');
+        d3.select("#classCam_SUB_3").attr('xlink:href', 'cams/CAM1_15.jpg');
+        d3.select("#classCam_SUB_4").attr('xlink:href', 'cams/CAM1_20.jpg');
+
+        // class
+        d3.select("#studyCam_MAIN").attr('xlink:href', 'cams/CAM0_20.jpg');
+        d3.select("#studyCam_SUB_1").attr('xlink:href', 'cams/CAM0_5.jpg');
+        d3.select("#studyCam_SUB_2").attr('xlink:href', 'cams/CAM0_10.jpg');
+        d3.select("#studyCam_SUB_3").attr('xlink:href', 'cams/CAM0_15.jpg');
+        d3.select("#studyCam_SUB_4").attr('xlink:href', 'cams/CAM0_20.jpg');
+
+        // subtitle
+        d3.select("#studyCam_subtitle").text("True: Hand; Pred: Hand");
+        d3.select("#classCam_subtitle").text("True: Normal; Pred: Abnormal");
+      }
     }
   </script>
 

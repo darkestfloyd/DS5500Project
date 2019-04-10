@@ -61,8 +61,9 @@ function addGradView(container, cam_paths, id_prefix,
   ttext = "True: " + label_true + "; Pred: " + label_pred; 
   container.append("text")
       .attr("y", 50)
-      .attr("x", (groupCamWidth / 2) - 5 * ttext.length)
       .attr("font-size", "18px")
+      .attr("x", (groupCamWidth / 2) - 5 * ttext.length)
+      .attr("id", id_prefix + "_subtitle")
       .text(function(d) { return "True: " + label_true + "; Pred: " + label_pred; });
 
   // add each image in this loop, 0 is main image, 1,2,3,4 are small multiples
@@ -138,7 +139,7 @@ var studyCam = svg.append("g")
 
 var studyCam_paths = ["cams/CAM0_5.jpg", "cams/CAM0_10.jpg", "cams/CAM0_15.jpg", 
   "cams/CAM0_20.jpg"]
-addGradView(studyCam, studyCam_paths, "studyCam", "Study Type Prediction", "Hand", "Leg");
+addGradView(studyCam, studyCam_paths, "studyCam", "Study Type Prediction", "Hand", "Hand");
 
 // add and populate class cam container
 var classCam = svg.append("g")
