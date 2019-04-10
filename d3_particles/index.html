@@ -142,7 +142,7 @@
 			});
 
 			// models
-			d3.json("data/models_new.json", function(data) {
+			d3.json("models.json", function(data) {
 				var parts = config.parts;
 				parts.forEach(function(v, i) {
 					var element = "#" + v.toLowerCase() + "-graph";	
