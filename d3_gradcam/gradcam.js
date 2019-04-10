@@ -1,7 +1,7 @@
 var logger = 0;
 // define some dimensions
 var margin = {top: 10, bottom: 10, left: 10, right: 10, between: 70, sm_between: 20};
-var height = 780 - margin.top - margin.bottom,
+var height = 730 - margin.top - margin.bottom,
   width = 1100 - margin.left - margin.right;
 var groupCamWidth = (width - margin.between) / 2, groupCamHeight = height;
 var mainCamWidth = 400, mainCamHeight = 400;
@@ -31,7 +31,7 @@ function addGradView(container, cam_paths, id_prefix,
   
   var subCamStartX = (groupCamWidth / 2) - (subCamWidth + 
     margin.sm_between + subCamWidth + margin.sm_between/2),
-    subCamStartY = 100 + mainCamHeight + 30,
+    subCamStartY = 80 + mainCamHeight + 30,
     selectedImg = 3;
 
   // add the line acting as x axis
@@ -52,7 +52,7 @@ function addGradView(container, cam_paths, id_prefix,
 
   // add title text
   container.append("text")
-      .attr("y", 45) 
+      .attr("y", 25) 
       .attr("x", (groupCamWidth / 2) - 4.8 * title.length)
       .attr("font-size", "18px")
       .text(function(d) { return title; });
@@ -60,7 +60,7 @@ function addGradView(container, cam_paths, id_prefix,
   // add other text
   ttext = "True: " + label_true + "; Pred: " + label_pred; 
   container.append("text")
-      .attr("y", 70)
+      .attr("y", 50)
       .attr("x", (groupCamWidth / 2) - 5 * ttext.length)
       .attr("font-size", "18px")
       .text(function(d) { return "True: " + label_true + "; Pred: " + label_pred; });
@@ -72,7 +72,7 @@ function addGradView(container, cam_paths, id_prefix,
       // 0 is main, do main related stuff
       var cam_name = "_MAIN",
         cam_size = {h: mainCamHeight, w: mainCamWidth},
-        cam_pos = {x: (groupCamWidth - cam_size.w) / 2, y: 100},
+        cam_pos = {x: (groupCamWidth - cam_size.w) / 2, y: 80},
         cam_class = "color",
         cam_path = cam_paths[selectedImg];
     } else {
