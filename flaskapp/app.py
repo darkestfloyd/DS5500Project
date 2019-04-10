@@ -21,9 +21,9 @@ if __name__ == '__main__':
             'Humerus' : '#fc8d59', 
             'Finger' : '#fee090', 
             'Elbow' : '#ffffbf', 
-            'Wrist' : 'e0f3f8', 
-            'Forearm' : '91bfdb', 
-            'Hand' : '4575b4', 
+            'Wrist' : '#e0f3f8', 
+            'Forearm' : '#91bfdb', 
+            'Hand' : '#4575b4', 
             'Input' : '#999999',
             'Normal' : '#5ab4ac',
             'Abnormal' : '#d8b365'}

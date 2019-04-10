@@ -86,7 +86,7 @@ class DenseNetViz(Resource):
             misclass_counts = model.Body_Label.value_counts(normalize = True)
             other = [{self.nkeys[0] :  self.body_parts[idx],
                       'h' : float(misclass_counts[idx]),
-                      self.nkeys[2] : self.color[self.body_parts[idx]]} 
+                      self.nkeys[1] : self.color[self.body_parts[idx]]} 
                        for idx in misclass_counts.keys()]
             self.nodes = [{self.nkeys[0] : 'Other', 
                       'parts' : other}]
