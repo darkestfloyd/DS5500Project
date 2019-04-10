@@ -5,7 +5,7 @@ var Graph = function(opts) {
 	this.element = opts.element;
 	this.width = opts.width;
 	this.height = opts.height;
-	this.xMax = 5;
+	this.xMax = 20;
 	this.yMax = 1;
 	this.lineColor = opts.lineColor;
 	this.bestLineColor = opts.bestLineColor;
@@ -58,7 +58,7 @@ Graph.prototype.createScales = function() {
 
 	// x and y extent
 	var xExtent = [0, this.xMax];
-	var yExtent = [0, this.yMax];
+	var yExtent = [0.5, this.yMax];
 
 	this.xScale = d3.scale.linear()
         .range([0, this.width-m.right])
@@ -119,7 +119,7 @@ Graph.prototype.addLine = function() {
         .attr("fill", "none")
         .style("stroke", strokeColor)
         .attr("name", _this.name)
-        .attr("index", i)
+        .attr("index", i+1)
         .attr("stroke", strokeColor)
         .on("mouseover", function() {
         	d3.select(this).attr("stroke-width", 2);
