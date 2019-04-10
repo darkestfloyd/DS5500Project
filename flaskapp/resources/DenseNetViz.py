@@ -12,12 +12,16 @@ class DenseNetViz(Resource):
         self.nkeys = ['name', 'color', 'accuracy']
         self.lkeys = ['source', 'target', 'value', 'count', 'color']
         self.classes = ['Normal', 'Abnormal']
+        self.ckeys = ['tn', 'fp', 'fn', 'tp']
+        self.nodes = [] 
+        self.links = []
+        self.cm = {}
 
     def get(self, predPart, model = 0, view = 'all', truePart = 'all'):
         
-        links = []
         self.predPart = predPart
         self.truePart = truePart
+        self.view = view
         self.predIdx = self.body_parts.index(self.predPart)
         print("Part idx: ", self.predIdx, '\n')
         
@@ -30,30 +34,28 @@ class DenseNetViz(Resource):
 
         #get view
         #view abnormal flow for all points
-        if(view == 'all'):
+        if(self.view == 'all'):
             
             self.accuracy_part = float(accuracy_score(y_true = model.Body_Label,
                                             y_pred = model.Body_Prediction))
-            nodes = self.generateNodes(model)
-            links = self.generateLinks(model)
+            self.generateNodes(model)
+            self.generateLinks(model)
             
         #view abnormal flow for correctly classified points
-        if(view == 'classified'):
+        if(self.view == 'classified'):
             
+            self.truePart = self.predPart
             _model = model[model.Body_Label == self.predIdx]
             self.accuracy_part = 1
-            nodes = self.generateNodes(_model)
-            links = self.generateLinks(_model)
+            self.generateNodes(_model)
+            self.generateLinks(_model)
        
         #view flow of all misclassififed points
-        if(view == 'misclassified'):
-            if(truePart == 'all'):
+        if(self.view == 'misclassified'):
+            if(self.truePart == 'all'):
                 _model = model[model.Body_Label != self.predIdx]
-                misclass_counts = _model.Body_Label.value_counts(normalize = True)
-                nodes = [{'h' : float(misclass_counts[idx]),
-                     'color' : self.color[self.body_parts[idx]]} 
-                    for idx in misclass_counts.keys()]
-                links = self.generateLinks(_model)
+                self.generateNodes(_model)
+                self.generateLinks(_model)
                 
             else:
                 try:
@@ -64,10 +66,10 @@ class DenseNetViz(Resource):
                     print(msg)
                 _model = model[model.Body_Label == self.trueIdx]
                 self.accuracy_part = 0
-                nodes = self.generateNodes(_model)
-                links = self.generateLinks(_model)
+                self.generateNodes(_model)
+                self.generateLinks(_model)
         
-        dNetJson = {'nodes': nodes, 'links': links}
+        dNetJson = {'nodes': self.nodes, 'links': self.links, 'confusion_matrix': self.cm}
         
         return dNetJson
     
@@ -75,22 +77,36 @@ class DenseNetViz(Resource):
         
         tn, fp, fn, tp = confusion_matrix(y_true = model.Abnormal_Label,
                                                 y_pred = model.Abnormal_Prediction).ravel()
-            
-            #set node dictionary  
-        nodes = [{self.nkeys[0] : self.predPart,                                       #name
-                      self.nkeys[1] : self.color[self.predPart],                       #color
-                      self.nkeys[2] : self.accuracy_part},                             #accuracy
-                     
-                    {self.nkeys[0] : self.classes[0], 
-                     self.nkeys[1] : self.color[self.classes[0]], 
-                     self.nkeys[2] : float(tp/(tp+fn))},
-                     
-                    {self.nkeys[0] : self.classes[1],
-                     self.nkeys[1] : self.color[self.classes[1]],
-                     self.nkeys[2] : float(tn/(tn+fp))}]
-            
-        return nodes
+        self.cm = { self.ckeys[0] : int(tn),
+               self.ckeys[1] : int(fp),
+               self.ckeys[2] : int(fn),
+               self.ckeys[3] : int(tp) }
         
+        if(self.truePart == 'all'):
+            misclass_counts = model.Body_Label.value_counts(normalize = True)
+            other = [{self.nkeys[0] :  self.body_parts[idx],
+                      'h' : float(misclass_counts[idx]),
+                      self.nkeys[2] : self.color[self.body_parts[idx]]} 
+                       for idx in misclass_counts.keys()]
+            self.nodes = [{self.nkeys[0] : 'Other', 
+                      'parts' : other}]
+        else: 
+            #set node dictionary  
+            self.nodes = [{self.nkeys[0] : self.truePart,                                       #name
+                      self.nkeys[1] : self.color[self.truePart],                       #color
+                      self.nkeys[2] : self.accuracy_part}]                            #accuracy
+        
+
+        self.nodes.extend([
+            {self.nkeys[0] : self.classes[0], 
+             self.nkeys[1] : self.color[self.classes[0]], 
+             self.nkeys[2] : float(tp/(tp+fn))},
+             
+            {self.nkeys[0] : self.classes[1],
+             self.nkeys[1] : self.color[self.classes[1]],
+             self.nkeys[2] : float(tn/(tn+fp))}])
+        
+            
     def generateLinks(self, model):
         
         # gives a pandas series object; get counts of a body-part classified as normal/abnormal
@@ -98,12 +114,9 @@ class DenseNetViz(Resource):
         part_abnormality = model.groupby(['Body_Label', 'Abnormal_Prediction']).size()
         filter_parts = part_abnormality.index.get_level_values(0)                       #body_label
         filter_abnormality = part_abnormality.index.get_level_values(1)                 #abnormality
-        links = []
         for part, abn in zip(filter_parts, filter_abnormality):
-            links.extend([{ self.lkeys[0] : 0,                                          #source
+            self.links.extend([{ self.lkeys[0] : 0,                                          #source
                      self.lkeys[1] : int(abn)+1,                                        #tagert
                      self.lkeys[2] : 1,                                                 #value
                      self.lkeys[3] : int(part_abnormality[part, abn]),                  #count
                      self.lkeys[4] : self.color[self.classes[abn]]}])                   #color
-
-        return links

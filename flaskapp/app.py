@@ -13,7 +13,7 @@ api = Api(app)
 
 if __name__ == '__main__':
     
-    path = '../data'
+    path = '../data/'
     models =  ['Model'+str(i) for i in np.arange(1,17)]
     body_parts = ['Shoulder', 'Humerus', 'Finger', 'Elbow', 'Wrist', 'Forearm', 'Hand']
     filename = 'abnormal_results.csv'
@@ -26,14 +26,14 @@ if __name__ == '__main__':
             'Hand' : '4575b4', 
             'Input' : '#999999',
             'Normal' : '#5ab4ac',
-            'Abnormal' : '#d8b365l'}
+            'Abnormal' : '#d8b365'}
     data = {}
 
     #read model results
     for part in body_parts:
         for model in models:
             pathname = os.path.join(path, part, model, filename)
-            name = part + '_' + model
+            name = part + '_' + model  
             data[name] = pd.read_csv(pathname)
             data[name].rename(columns = {'Abormal_Prediction' : 'Abnormal_Prediction'},
                 inplace = True)
