@@ -142,8 +142,25 @@ BodyParticles.prototype.addNodes = function() {
 		    				.attr("name", function(d) { return d.name; })
 		      				.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
 		      				.on("click", function(d) {
-								dispatch.nodeClicked(d);
+								dispatch.nodeClicked(_this, d);
+							})
+							.on("mouseover", function(d) {
+								d3.select(".tooltip").transition()
+                					.duration(200)	
+                					.style("opacity", .9);
+
+                				d3.select(".tooltip").html("<p>" + d.name + " : " + ((d.accuracy).toFixed(2))
+                										+ "<p>Other : " + ((1-d.accuracy)).toFixed(2))
+                									.style("left", (d3.event.pageX + 10) + "px")		
+                									.style("top", (d3.event.pageY - 28) + "px");
+							})
+							.on("mouseout", function(d) {
+								d3.select(".tooltip")
+									.transition()		
+                					.duration(500)		
+                					.style("opacity", 0);
 							});
+
 	node.append("rect")
 			.attr("height", function(d) { return d.dy; })
 			.attr("width", _this.sankey.nodeWidth())
@@ -209,17 +226,23 @@ BodyParticles.prototype.move = function() {
 	}
 }
 
-dispatch.on("nodeClicked.particles", function(_this) {
-	var modelId = d3.selectAll("[name=" + _this.name + "][stroke=" + config.graph.bestLineColor + "]").attr("index");
-	d3.json("data/" + _this.name.toLowerCase() + "-" + modelId + ".json", function(data) {
-		var opts = {};
-		opts.data = data;
-		opts.width = config.particles.width;
-		opts.height = config.particles.height;
-		opts.margin = config.particles.margin;
-		opts.name = _this.name;
-		opts.element = "#particle-focus-viz";
-		var p = new NormalParticles(opts);
-		p.draw();
-	});
+dispatch.on("nodeClicked.particles", function(_main, _this) {
+	if(_main.particles.length == 0) {
+		var modelId = d3.selectAll("[name=" + _this.name + "][stroke=" + config.graph.bestLineColor + "]").attr("index");
+		d3.json("http://127.0.0.1:5000/main/" + _this.name + "/model=" + modelId + "/view=all", function(data) {
+		//d3.json("data/" + _this.name.toLowerCase() + "-" + modelId + ".json", function(data) {
+			// update the confusion matrix
+			updateCf(data.confusion_matrix);
+			var opts = {};
+			opts.data = data;
+			opts.width = config.particles.width;
+			opts.height = config.particles.height;
+			opts.margin = config.particles.margin;
+			opts.name = _this.name;
+			opts.element = "#particle-focus-viz";
+			opts.type = "all"
+			var p = new NormalParticles(opts);
+			p.draw();
+		});
+	}
 });

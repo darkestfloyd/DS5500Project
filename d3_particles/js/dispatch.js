@@ -7,4 +7,4 @@ minusClicked : clicling on a minus button
 
 // lineClicked
 
-var dispatch = d3.dispatch("lineClicked", "plusClicked", "minusClicked", "nodeClicked", "trueClicked", "falseClicked");
+var dispatch = d3.dispatch("lineClicked", "plusClicked", "minusClicked", "nodeClicked", "trueClicked", "falseClicked", "falsePartClicked");

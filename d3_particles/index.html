@@ -47,7 +47,7 @@
 							<div class="row">
 								<div class="col-md-12">
 									<div id="table-container" style="position:relative">
-										<table style="display:none;" class="table table-bordered">
+										<table class="table table-bordered">
 											<tr>
 												<td rowspan="4" style="vertical-align : middle;text-align:center;">Actual</td>
 												<td colspan="3" align="center">Predicted</td>
@@ -59,13 +59,13 @@
 											</tr>
 											<tr>
 												<td>T</td>
-												<td id="tt">10.1</td>
-												<td id="tf">10.2</td>
+												<td id="tp">382</td>
+												<td id="fn">102</td>
 											</tr>
 											<tr>
 												<td>F</td>
-												<td id="ft">20.3</td>
-												<td id="ff">20.4</td>
+												<td id="fp">180</td>
+												<td id="tn">185</td>
 											</tr>
 										</table>
 									</div>
@@ -115,10 +115,21 @@
 	<script type="text/javascript" src="js/classifier.js"></script>
 	<script type="text/javascript" src="js/graph.js"></script>
 	<script type="text/javascript">
-		
+		var updateCf = function(cf) {
+			d3.select("#tn").text(cf.tn);
+			d3.select("#tp").text(cf.tp);
+			d3.select("#fp").text(cf.fp);
+			d3.select("#fn").text(cf.fn);
+		}
+	</script>
+	<script type="text/javascript">
 		var onLoad = function() {
 			// particles
-			d3.json("data/graph.json", function(data) {
+			d3.json("http://localhost:5000/main", function(data) {
+			//d3.json("data/graph.json", function(data) {
+				// update the confusion matrix
+				// updateCf(data.confusion_matrix);
+
 				var opts = {
 					data: data,
 					width: config.particles.width,
@@ -130,10 +141,8 @@
 				particles.draw();
 			});
 
-
-
 			// models
-			d3.json("data/models.json", function(data) {
+			d3.json("data/models_new.json", function(data) {
 				var parts = config.parts;
 				parts.forEach(function(v, i) {
 					var element = "#" + v.toLowerCase() + "-graph";	
@@ -158,6 +167,11 @@
 		
 	</script>
 	<script type="text/javascript">
+		// Define the div for the tooltip
+		d3.select("body").append("div")	
+    		.attr("class", "tooltip")				
+    		.style("opacity", 0);
+
 		var wizard = [
 		{"title": "What is MURA?", "body": "<p>MURA (musculoskeletal radiographs) is a large dataset of bone X-rays. Algorithms are tasked with determining whether an X-ray study is normal or abnormal.</p>"},
 		{"title": "What are you about to see?", "body": "<p>A visualization which provides on overview of different models to solve the classification problem.</p>"},
