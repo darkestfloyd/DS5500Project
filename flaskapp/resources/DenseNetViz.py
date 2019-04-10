@@ -2,6 +2,7 @@ from flask_restful import Resource
 import numpy as np
 from sklearn.metrics import accuracy_score, confusion_matrix
 import pandas as pd
+import math
 
 class DenseNetViz(Resource):
 
@@ -23,7 +24,7 @@ class DenseNetViz(Resource):
         self.truePart = truePart
         self.view = view
         self.predIdx = self.body_parts.index(self.predPart)
-        print("Part idx: ", self.predIdx, '\n')
+        #print("Part idx: ", self.predIdx, '\n')
         
         #get model
         if model == 0:
@@ -61,7 +62,7 @@ class DenseNetViz(Resource):
             else:
                 try:
                     self.trueIdx = self.body_parts.index(self.truePart)
-                    print("true part idx: ", self.trueIdx)
+                    #print("true part idx: ", self.trueIdx)
                 except:
                     msg = "incorrect body part name"
                     print(msg)
@@ -75,9 +76,20 @@ class DenseNetViz(Resource):
         return dNetJson
     
     def generateNodes(self, model):
-        
-        tn, fp, fn, tp = confusion_matrix(y_true = model.Abnormal_Label,
+       
+        fn = 0
+        fp = 0
+        y_true = model.Abnormal_Label
+        y_pred = model.Abnormal_Prediction
+
+        if(model.shape[0] == 1):
+            tp = 1 if (y_true.iloc[0] == 1 & y_pred.iloc[0] == 1) else 0
+            tn = 1 if (y_true.iloc[0] == 0 & y_pred.iloc[0] == 0) else 0
+       
+        else:
+            tn, fp, fn, tp = confusion_matrix(y_true = model.Abnormal_Label,
                                                 y_pred = model.Abnormal_Prediction).ravel()
+
         self.cm = { self.ckeys[0] : int(tn),
                self.ckeys[1] : int(fp),
                self.ckeys[2] : int(fn),
@@ -96,16 +108,22 @@ class DenseNetViz(Resource):
             self.nodes = [{self.nkeys[0] : self.truePart,                              #name
                       self.nkeys[1] : self.color[self.truePart],                       #color
                       self.nkeys[2] : self.accuracy_part}]                             #accuracy
-        
+       
+        try:
+            accNormal = float(tp/(tp+fn))
+            accAbnormal = float(tn/(tn+fp))
+        except ZeroDivisionError:
+            accNormal = tp
+            accAbnormal = tn
 
         self.nodes.extend([
             {self.nkeys[0] : self.classes[0], 
              self.nkeys[1] : self.color[self.classes[0]], 
-             self.nkeys[2] : float(tp/(tp+fn))},
+             self.nkeys[2] : float(tp) if math.isnan(accNormal) else accNormal},
              
             {self.nkeys[0] : self.classes[1],
              self.nkeys[1] : self.color[self.classes[1]],
-             self.nkeys[2] : float(tn/(tn+fp))}])
+             self.nkeys[2] : float(tn) if math.isnan(accAbnormal) else accAbnormal}])
         
             
     def generateLinks(self, model):
@@ -120,4 +138,4 @@ class DenseNetViz(Resource):
                      self.lkeys[1] : int(abn)+1,                                        #tagert
                      self.lkeys[2] : 1,                                                 #value
                      self.lkeys[3] : int(part_abnormality[part, abn]),                  #count
-                     self.lkeys[4] : self.color[self.classes[abn]]}])                   #color
+                     self.lkeys[4] : self.color[self.body_parts[part]]}])                   #color
