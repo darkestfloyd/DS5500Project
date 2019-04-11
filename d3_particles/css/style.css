@@ -94,3 +94,7 @@ pointer-events: none;
     display: block;
     z-index: 120;
 }
+
+.axis {
+	font-size: 0.75em;
+}
