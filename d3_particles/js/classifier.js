@@ -25,6 +25,7 @@ NormalParticles.prototype.draw = function() {
 	var svg = parent.append("svg")
 		.attr("width", _this.width)
 		.attr("height", _this.height)
+		.style("position", "relative")
 		.append("g")
 		.attr("transform", "translate(" + m.left + "," + m.top + ")");
 	_this.plot = svg;
