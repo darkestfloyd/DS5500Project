@@ -59,6 +59,7 @@ NormalParticles.prototype.addNodes = function() {
 	var node = svg.append("g").selectAll("." + _this.nodeClass)
 		      				.data([_this.data.nodes[0]])
 		    				.enter().append("g")
+		    				.style("cursor", "pointer")
 		      				.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
 	if(_this.type == "classified" || _this.type == "all") {
 		node.on("mouseover", function(d) {
@@ -81,7 +82,7 @@ NormalParticles.prototype.addNodes = function() {
 			.attr("height", function(d) { return d.dy; })
 			.attr("width", _this.sankey.nodeWidth())
 			.style("fill", function(d) { return d.color; })
-			.style("stroke", "none")
+			.attr("stroke", "#000")
 			.on("click", function(d) {
 				dispatch.trueClicked(d);
 			});
@@ -92,7 +93,6 @@ NormalParticles.prototype.addNodes = function() {
 			.attr("opacity", 1)
 			.attr("id", function(d) { return d.name + "-white"; })
 			.attr("fill", "#fff")
-			.attr("stroke", "#000")
 			.on("click", function(d) {
 				dispatch.falseClicked(d);
 			});
@@ -172,15 +172,14 @@ NormalParticles.prototype.addNodes = function() {
 			.attr("height", function(d) { return d.dy; })
 			.attr("width", _this.sankey.nodeWidth())
 			.style("fill", function(d) { return d.color; })
-			.style("stroke", "none");
+			.attr("stroke", "#000");
 
 	otherNodes.append("rect")
 			.attr("height", function(d) { return d.dy; })
 			.attr("width", _this.sankey.nodeWidth())
 			.attr("opacity", 1)
 			.attr("id", function(d) { return d.name + "-white"; })
-			.attr("fill", "#fff")
-			.attr("stroke", "#000");
+			.attr("fill", "#fff");
 
 	otherNodes.append("text")
 		      .attr("x", -6)
