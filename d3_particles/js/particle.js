@@ -246,6 +246,7 @@ dispatch.on("nodeClicked.particles", function(_this) {
 			d3.selectAll("." + config.particles.nodeClass).style("opacity", 1);
 		}
 		if(d3.select("." + config.particles.nodeClass).style("cursor") == "pointer") {
+			d3.selectAll("." + config.particles.nodeClass).style("cursor","");
 			var modelId = d3.selectAll("[name=" + _this.name + "][stroke=" + config.graph.bestLineColor + "]").attr("index");
 			d3.json("http://127.0.0.1:5000/main/" + _this.name + "/model=" + modelId + "/view=all", function(data) {
 			//d3.json("data/" + _this.name.toLowerCase() + "-" + modelId + ".json", function(data) {

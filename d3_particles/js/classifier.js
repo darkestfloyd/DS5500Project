@@ -60,7 +60,7 @@ NormalParticles.prototype.addNodes = function() {
 	var node = svg.append("g").selectAll("." + _this.nodeClass)
 		      				.data([_this.data.nodes[0]])
 		    				.enter().append("g")
-		    				.style("cursor", "pointer")
+		    				.attr("class", "node")
 		      				.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
 	if(_this.type == "classified" || _this.type == "all") {
 		node.on("mouseover", function(d) {
@@ -123,7 +123,7 @@ NormalParticles.prototype.addNodes = function() {
 			.attr("height", function(d) { return (total) * d.dy; })
 			.attr("width", _this.sankey.nodeWidth())
 			.style("fill", v.color)
-			.style("stroke", "none")
+			.style("stroke", "#000")
 			.attr("part", v.name)
 			.on("mouseover", function() {
 				d3.select(".tooltip").transition()
@@ -195,74 +195,81 @@ NormalParticles.prototype.addNodes = function() {
 }
 
 dispatch.on("trueClicked", function(_this) {
-	console.log("true clicked");
-	var modelId = d3.selectAll("[name=" + _this.name + "][stroke=" + config.graph.bestLineColor + "]").attr("index");
-	d3.json("http://127.0.0.1:5000/main/" + _this.name + "/model=" + modelId + "/view=classified", function(data) {
-	//d3.json("data/" + _this.name.toLowerCase() + "-" + modelId + ".json", function(data) {
+	if(d3.select("." + config.particles.nodeClass).style("cursor") == "pointer") {
+		d3.selectAll("." + config.particles.nodeClass).style("cursor","");
+		var modelId = d3.selectAll("[name=" + _this.name + "][stroke=" + config.graph.bestLineColor + "]").attr("index");
+		d3.json("http://127.0.0.1:5000/main/" + _this.name + "/model=" + modelId + "/view=classified", function(data) {
+		//d3.json("data/" + _this.name.toLowerCase() + "-" + modelId + ".json", function(data) {
 
-		// update the confusion matrix
-		updateCf(data.confusion_matrix);
-		var opts = {};
-		opts.data = data;
-		opts.width = config.particles.width;
-		opts.height = config.particles.height;
-		opts.margin = config.particles.margin;
-		opts.name = _this.name;
-		opts.element = "#particle-focus-viz";
-		opts.type = "classified";
-		opts.fixedLinks = [
-						{"source":0,"target":1,"value":1},
-						{"source":0,"target":2,"value":1}
-				];
-		var p = new NormalParticles(opts);
-		p.draw();
-	});
+			// update the confusion matrix
+			updateCf(data.confusion_matrix);
+			var opts = {};
+			opts.data = data;
+			opts.width = config.particles.width;
+			opts.height = config.particles.height;
+			opts.margin = config.particles.margin;
+			opts.name = _this.name;
+			opts.element = "#particle-focus-viz";
+			opts.type = "classified";
+			opts.fixedLinks = [
+							{"source":0,"target":1,"value":1},
+							{"source":0,"target":2,"value":1}
+					];
+			var p = new NormalParticles(opts);
+			p.draw();
+		});
+	}
 });
 
 
 dispatch.on("falseClicked", function(_this) {
-	console.log("false clicked");
-	var modelId = d3.selectAll("[name=" + _this.name + "][stroke=" + config.graph.bestLineColor + "]").attr("index");
-	d3.json("http://127.0.0.1:5000/main/" + _this.name + "/model=" + modelId + "/view=misclassified/all", function(data) {
-		// update the confusion matrix
-		updateCf(data.confusion_matrix);
-		var opts = {};
-		opts.data = data;
-		opts.width = config.particles.width;
-		opts.height = config.particles.height;
-		opts.margin = config.particles.margin;
-		opts.name = _this.name;
-		opts.element = "#particle-focus-viz";
-		opts.type = "misclassified";
-		opts.fixedLinks = [
-						{"source":0,"target":1,"value":1},
-						{"source":0,"target":2,"value":1}
-				];
-		var p = new NormalParticles(opts);
-		p.draw();
-	});
+	if(d3.select("." + config.particles.nodeClass).style("cursor") == "pointer") {
+		d3.selectAll("." + config.particles.nodeClass).style("cursor","");
+		var modelId = d3.selectAll("[name=" + _this.name + "][stroke=" + config.graph.bestLineColor + "]").attr("index");
+		d3.json("http://127.0.0.1:5000/main/" + _this.name + "/model=" + modelId + "/view=misclassified/all", function(data) {
+			// update the confusion matrix
+			updateCf(data.confusion_matrix);
+			var opts = {};
+			opts.data = data;
+			opts.width = config.particles.width;
+			opts.height = config.particles.height;
+			opts.margin = config.particles.margin;
+			opts.name = _this.name;
+			opts.element = "#particle-focus-viz";
+			opts.type = "misclassified";
+			opts.fixedLinks = [
+							{"source":0,"target":1,"value":1},
+							{"source":0,"target":2,"value":1}
+					];
+			var p = new NormalParticles(opts);
+			p.draw();
+		});
+	}
 });
 
 
 dispatch.on("falsePartClicked", function(_this, part) {
-	var modelId = d3.selectAll("[name=" + _this.name + "][stroke=" + config.graph.bestLineColor + "]").attr("index");
-	d3.json("http://127.0.0.1:5000/main/" + _this.name + "/model=" + modelId + "/view=misclassified/" + part, function(data) {
-	//d3.json("data/" + _this.name.toLowerCase() + "-" + modelId + ".json", function(data) {
-		// update the confusion matrix
-		updateCf(data.confusion_matrix);
-		var opts = {};
-		opts.data = data;
-		opts.width = config.particles.width;
-		opts.height = config.particles.height;
-		opts.margin = config.particles.margin;
-		opts.name = part;
-		opts.element = "#particle-focus-viz";
-		opts.type = "classified";
-		opts.fixedLinks = [
-						{"source":0,"target":1,"value":1},
-						{"source":0,"target":2,"value":1}
-				];
-		var p = new NormalParticles(opts);
-		p.draw();
-	});
+	if(d3.select("." + config.particles.nodeClass).style("cursor") == "pointer") {
+		d3.selectAll("." + config.particles.nodeClass).style("cursor","");
+		var modelId = d3.selectAll("[name=" + _this.name + "][stroke=" + config.graph.bestLineColor + "]").attr("index");
+		d3.json("http://127.0.0.1:5000/main/" + _this.name + "/model=" + modelId + "/view=misclassified/" + part, function(data) {
+		//d3.json("data/" + _this.name.toLowerCase() + "-" + modelId + ".json", function(data) {
+			// update the confusion matrix
+			updateCf(data.confusion_matrix);
+			var opts = {};
+			opts.data = data;
+			opts.width = config.particles.width;
+			opts.height = config.particles.height;
+			opts.margin = config.particles.margin;
+			opts.name = part;
+			opts.element = "#particle-focus-viz";
+			opts.type = "classified";
+			opts.fixedLinks = [
+							{"source":0,"target":1,"value":1},
+							{"source":0,"target":2,"value":1}
+					];
+			var p = new NormalParticles(opts);
+			p.draw();
+		});
+	}
 });
