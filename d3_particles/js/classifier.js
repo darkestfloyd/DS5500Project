@@ -43,6 +43,7 @@ NormalParticles.prototype.draw = function() {
 	
 	// add timer for animation
 	_this.move = _that.move;
+	_this.getLink = _that.getLink;
 	_that.addTimer.call(_this);
 }
 
@@ -209,6 +210,10 @@ dispatch.on("trueClicked", function(_this) {
 		opts.name = _this.name;
 		opts.element = "#particle-focus-viz";
 		opts.type = "classified";
+		opts.fixedLinks = [
+						{"source":0,"target":1,"value":1},
+						{"source":0,"target":2,"value":1}
+				];
 		var p = new NormalParticles(opts);
 		p.draw();
 	});
@@ -229,6 +234,10 @@ dispatch.on("falseClicked", function(_this) {
 		opts.name = _this.name;
 		opts.element = "#particle-focus-viz";
 		opts.type = "misclassified";
+		opts.fixedLinks = [
+						{"source":0,"target":1,"value":1},
+						{"source":0,"target":2,"value":1}
+				];
 		var p = new NormalParticles(opts);
 		p.draw();
 	});
@@ -249,6 +258,10 @@ dispatch.on("falsePartClicked", function(_this, part) {
 		opts.name = part;
 		opts.element = "#particle-focus-viz";
 		opts.type = "classified";
+		opts.fixedLinks = [
+						{"source":0,"target":1,"value":1},
+						{"source":0,"target":2,"value":1}
+				];
 		var p = new NormalParticles(opts);
 		p.draw();
 	});

@@ -3,6 +3,7 @@ var BodyParticles = function(opts) {
 	this.height = opts.height;
 	this.margin = opts.margin;
 	this.data = opts.data;
+	this.data.fixedLinks = opts.fixedLinks;
 	this.element = opts.element;
 }
 
@@ -64,15 +65,17 @@ BodyParticles.prototype.addTimer = function() {
 		  		return true;
 		  	}
 
-		    d3.selectAll("path." + _this.linkClass)
-		    .each(
-		      function (d) {
-		        if (d.current  < d.count) {
-		          var offset = (Math.random() - .5) * d.dy;
-		          _this.particles.push({link: d, time: elapsed, offset: offset, path: this})
-		        }
-		        d.current += 1;
-		      });
+		    var links = _this.data.links;
+		    var l = {};
+		    for(i in links) {
+		    	var l = _this.getLink(links[i].source, links[i].target)[0];
+		    	var p = d3.select("path[source=" + _this.data.nodes[links[i].source].name + "][target=" + _this.data.nodes[links[i].target].name + "]").node();
+		    	if (links[i].current  < links[i].count) {
+		    		var offset = (Math.random() - .5) * l.dy;
+		    		_this.particles.push({link: l, time: elapsed, color: links[i].color, size: 3, offset: offset, path: p})
+		    	}
+		    	links[i].current += 1;
+		    }
 		    
 		    if(_this.particles.length == 0) {
 		    	return true;
@@ -102,10 +105,16 @@ BodyParticles.prototype.sankey = function() {
     _this.path = _this.sankey.link();
 	_this.sankey
 		.nodes(_this.data.nodes)
-		.links(_this.data.links)
+		.links(_this.data.fixedLinks)
 		.layout(32);
 }
-
+BodyParticles.prototype.getLink = function(source, target) {
+	var _this = this;
+	var data = this.data.fixedLinks.filter(function(d) {
+		return d.source.name == _this.data.nodes[source].name && d.target.name == _this.data.nodes[target].name;
+	});
+	return data;
+}
 BodyParticles.prototype.addLinks = function() {
 	// copy scope
 	var _this = this;
@@ -115,14 +124,16 @@ BodyParticles.prototype.addLinks = function() {
 
 	// links
 	var link = svg.append("g").selectAll("." + _this.linkClass)
-		      				.data(_this.data.links)
+		      				.data(_this.data.fixedLinks)
 		    				.enter().append("path")
+		    				.attr("source", function(d) { return d.source.name; })
+		    				.attr("target", function(d) { return d.target.name; })
 		      				.attr("class", _this.linkClass)
 		      				.attr("d", _this.path)
 		      				.style("stroke-width", function(d) { return Math.max(1, d.dy); })
 		      				.sort(function(a, b) { return b.dy - a.dy; });
 	_this.data.links.forEach(function (link) {
-	    link.particleSize = 5;
+	    link.particleSize = 3;
 	    link.current = 0;
 	});
 }
@@ -209,9 +220,9 @@ BodyParticles.prototype.move = function() {
 		var currentPos = p[x].path.getPointAtLength(currentPercent/1.5);
 		if(currentPos.x < p[x].link.target.x) {
       		context.beginPath();
-      		context.fillStyle = p[x].link.color;
+      		context.fillStyle = p[x].color;
       		context.arc(m.left + currentPos.x, m.top + currentPos.y + p[x].offset,
-      					p[x].link.particleSize, 0, 2*Math.PI);
+      		p[x].size, 0, 2*Math.PI);
       		context.fill();
 		} else {
 			if (!("done" in p[x])) {
@@ -240,7 +251,11 @@ dispatch.on("nodeClicked.particles", function(_this) {
 			opts.margin = config.particles.margin;
 			opts.name = _this.name;
 			opts.element = "#particle-focus-viz";
-			opts.type = "all"
+			opts.type = "all";
+			opts.fixedLinks = [
+						{"source":0,"target":1,"value":1},
+						{"source":0,"target":2,"value":1}
+				];
 			var p = new NormalParticles(opts);
 			p.draw();
 		});
