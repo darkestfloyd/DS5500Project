@@ -36,11 +36,22 @@ Graph.prototype.draw = function() {
 			dispatch.minusClicked(_this);
 		});
 	}
+	this.el = d3.select(this.element);
+	if(this.type != "thumb") {
+		this.el = d3.select(this.element).append("div").style("overflow", "hidden");
+	}
 
-	var svg = d3.select(this.element).append('svg');
+	var svg = this.el.append('svg');
 	svg.style("position", "relative");
 	svg.attr("width", this.width);
 	svg.attr("height", this.height);
+
+	// add pan and zoom for max
+	if(this.type != "thumb") {
+		svg.call(d3.behavior.zoom().on("zoom", function () {
+			svg.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")")
+		}));
+	}
 
 	// append <g>
 	this.plot = svg.append("g")
