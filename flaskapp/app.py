@@ -19,6 +19,8 @@ if __name__ == '__main__':
     models =  ['Model'+str(i) for i in np.arange(1,17)]
     body_parts = ['Shoulder', 'Humerus', 'Finger', 'Elbow', 'Wrist', 'Forearm', 'Hand']
     filename = 'abnormal_results.csv'
+    best_n = [15, 4, 11, 7, 6, 10, 11]
+    best_model = [body_parts[i]+'_Model'+str(n) for i,n in enumerate(best_n)]
     color = {'Shoulder' : '#d73027', 
             'Humerus' : '#fc8d59', 
             'Finger' : '#fee090', 
@@ -45,14 +47,16 @@ if __name__ == '__main__':
             '/main',
             resource_class_kwargs={'data' : data,                                   
                 'body_parts' : body_parts,
-                'color' : color});
+                'color' : color,
+                'best_model' : best_model});
     
     api.add_resource(DenseNetViz, 
             '/main/<string:predPart>/model=<model>/view=<view>',
             '/main/<string:predPart>/model=<model>/view=<view>/<string:truePart>',
             resource_class_kwargs={'data' : data,                                   
                 'body_parts' : body_parts,
-                'color' : color});
+                'color' : color,
+                'best_model' : best_model});
 
     app.run(debug = True)
 

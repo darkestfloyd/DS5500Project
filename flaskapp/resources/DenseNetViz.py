@@ -10,6 +10,7 @@ class DenseNetViz(Resource):
         self.data = kwargs['data']
         self.body_parts = kwargs['body_parts']
         self.color = kwargs['color']
+        self.best_model = kwargs['best_model']
         self.nkeys = ['name', 'color', 'accuracy']
         self.lkeys = ['source', 'target', 'value', 'count', 'color']
         self.classes = ['Normal', 'Abnormal']
@@ -27,9 +28,9 @@ class DenseNetViz(Resource):
         #print("Part idx: ", self.predIdx, '\n')
         
         #get model
-        if model == 0:
+        if model == str(0):
             #best model-TBD
-            model = self.data[self.predPart+'_Model'+ str(2)]
+            model = self.data[self.best_model[self.predIdx]]
         else:
             model = self.data[self.predPart+'_Model'+ str(model)]
 
