@@ -1,6 +1,6 @@
 from flask_restful import Resource
 import numpy as np
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, confusion_matrix
 
 class AlexNetViz(Resource):
     
@@ -17,12 +17,16 @@ class AlexNetViz(Resource):
         links = []
         nodes = [{'name' : 'Input',
                 'color' : self.color['Input']}]
+        cm_all = np.zeros((7,7))
         for i, df in enumerate(self.data.values()):
              if i%16 != 0:
                  continue
              pred_label = int(df.Body_Prediction[0])
              label_counts = df.Body_Label.value_counts()
              accuracy = float(accuracy_score(y_true = df.Body_Label, y_pred = df.Body_Prediction))
+             cm_part = confusion_matrix(y_true = df.Body_Label, y_pred = df.Body_Prediction, labels = np.arange(0,7))
+             cm_all = np.add(cm_part, cm_all)
+
              #construct node dictionary 
              nodes.extend([{'name' : self.body_parts[pred_label],
                  'color' : self.color[self.body_parts[pred_label]],
@@ -31,8 +35,11 @@ class AlexNetViz(Resource):
              links.extend([{'source' : 0,
                   'target' : pred_label+1,
                  'value' : 1,
-                 'count' : int(label_counts[label]),
+                 'count' : int(label_counts[label]) 
+                            if label_counts[label]<10 else int(label_counts[label]/10),
                  'color' : self.color[self.body_parts[label]]
                  }for label in label_counts.keys()])
-        results = {'nodes' : nodes, 'links' : links}
+        
+        conf_mat = { i: [int(val) for val in cm_all[i, :]] for i in range(0,7) }      
+        results = {'nodes' : nodes, 'links' : links, 'confusion_matrix' : conf_mat}
         return results

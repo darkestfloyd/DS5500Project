@@ -131,12 +131,10 @@ class DenseNetViz(Resource):
         
         # gives a pandas series object; get counts of a body-part classified as normal/abnormal
         # by indexing [body_label, abnormal_label]; 
-        part_abnormality = model.groupby(['Body_Label', 'Abnormal_Prediction']).size()
-        filter_parts = part_abnormality.index.get_level_values(0)                       #body_label
-        filter_abnormality = part_abnormality.index.get_level_values(1)                 #abnormality
-        for part, abn in zip(filter_parts, filter_abnormality):
-            self.links.extend([{ self.lkeys[0] : 0,                                          #source
-                     self.lkeys[1] : int(abn)+1,                                        #tagert
-                     self.lkeys[2] : 1,                                                 #value
-                     self.lkeys[3] : int(part_abnormality[part, abn]),                  #count
-                     self.lkeys[4] : self.color[self.classes[abn]]}])                   #color
+        part_abnormality = model.groupby(['Body_Label', 'Abnormal_Prediction', 'Abnormal_Label']).size()
+        for row in part_abnormality.iteritems():
+            self.links.extend([{ self.lkeys[0] : 0,                                           #source
+                     self.lkeys[1] : int(row[0][1])+1,                                        #tagert
+                     self.lkeys[2] : 1,                                                       #value
+                     self.lkeys[3] : int(row[1]),                                             #count
+                     self.lkeys[4] : self.color[self.classes[row[0][2]]]}])                   #color
