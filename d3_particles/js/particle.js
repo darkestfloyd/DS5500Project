@@ -3,6 +3,7 @@ var BodyParticles = function(opts) {
 	this.height = opts.height;
 	this.margin = opts.margin;
 	this.data = opts.data;
+	this.data.fixedLinks = opts.fixedLinks;
 	this.element = opts.element;
 }
 
@@ -25,6 +26,7 @@ BodyParticles.prototype.draw = function() {
 	var svg = parent.append("svg")
 		.attr("width", _this.width)
 		.attr("height", _this.height)
+		.style("position", "relative")
 		.append("g")
 		.attr("transform", "translate(" + m.left + "," + m.top + ")");
 	_this.plot = svg;
@@ -38,7 +40,7 @@ BodyParticles.prototype.draw = function() {
 
 
 	// add nodes
-	_this.nodeClass = "node";
+	_this.nodeClass = config.particles.nodeClass;
 	_this.addNodes();
 	
 
@@ -64,17 +66,20 @@ BodyParticles.prototype.addTimer = function() {
 		  		return true;
 		  	}
 
-		    d3.selectAll("path." + _this.linkClass)
-		    .each(
-		      function (d) {
-		        if (d.current  < d.count) {
-		          var offset = (Math.random() - .5) * d.dy;
-		          _this.particles.push({link: d, time: elapsed, offset: offset, path: this})
-		        }
-		        d.current += 1;
-		      });
+		    var links = _this.data.links;
+		    var l = {};
+		    for(i in links) {
+		    	var l = _this.getLink(links[i].source, links[i].target)[0];
+		    	var p = d3.select("path[source=" + _this.data.nodes[links[i].source].name + "][target=" + _this.data.nodes[links[i].target].name + "]").node();
+		    	if (links[i].current  < links[i].count) {
+		    		var offset = (Math.random() - .5) * l.dy;
+		    		_this.particles.push({link: l, time: elapsed, color: links[i].color, size: 3, offset: offset, path: p})
+		    	}
+		    	links[i].current += 1;
+		    }
 		    
 		    if(_this.particles.length == 0) {
+		    	d3.selectAll("." + _this.nodeClass).style("cursor", "pointer");
 		    	return true;
 		    }
 
@@ -102,10 +107,16 @@ BodyParticles.prototype.sankey = function() {
     _this.path = _this.sankey.link();
 	_this.sankey
 		.nodes(_this.data.nodes)
-		.links(_this.data.links)
+		.links(_this.data.fixedLinks)
 		.layout(32);
 }
-
+BodyParticles.prototype.getLink = function(source, target) {
+	var _this = this;
+	var data = this.data.fixedLinks.filter(function(d) {
+		return d.source.name == _this.data.nodes[source].name && d.target.name == _this.data.nodes[target].name;
+	});
+	return data;
+}
 BodyParticles.prototype.addLinks = function() {
 	// copy scope
 	var _this = this;
@@ -115,14 +126,16 @@ BodyParticles.prototype.addLinks = function() {
 
 	// links
 	var link = svg.append("g").selectAll("." + _this.linkClass)
-		      				.data(_this.data.links)
+		      				.data(_this.data.fixedLinks)
 		    				.enter().append("path")
+		    				.attr("source", function(d) { return d.source.name; })
+		    				.attr("target", function(d) { return d.target.name; })
 		      				.attr("class", _this.linkClass)
 		      				.attr("d", _this.path)
 		      				.style("stroke-width", function(d) { return Math.max(1, d.dy); })
 		      				.sort(function(a, b) { return b.dy - a.dy; });
 	_this.data.links.forEach(function (link) {
-	    link.particleSize = 5;
+	    link.particleSize = 3;
 	    link.current = 0;
 	});
 }
@@ -138,11 +151,12 @@ BodyParticles.prototype.addNodes = function() {
 	var node = svg.append("g").selectAll("." + _this.nodeClass)
 		      				.data(_this.data.nodes)
 		    				.enter().append("g")
+		    				.attr("class", _this.nodeClass)
 		    				.attr("accuracy", function(d) { return d.accuracy; })
 		    				.attr("name", function(d) { return d.name; })
 		      				.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
 		      				.on("click", function(d) {
-								dispatch.nodeClicked(_this, d);
+								dispatch.nodeClicked(d);
 							})
 							.on("mouseover", function(d) {
 								d3.select(".tooltip").transition()
@@ -165,7 +179,7 @@ BodyParticles.prototype.addNodes = function() {
 			.attr("height", function(d) { return d.dy; })
 			.attr("width", _this.sankey.nodeWidth())
 			.style("fill", function(d) { return d.color; })
-			.style("stroke", "none");
+			.attr("stroke", "#000");
 
 	node.append("rect")
 			.attr("height", function(d) { return d.dy; })
@@ -173,7 +187,7 @@ BodyParticles.prototype.addNodes = function() {
 			.attr("opacity", 1)
 			.attr("id", function(d) { return d.name + "-white"; })
 			.attr("fill", "#fff")
-			.attr("stroke", "#000");
+			.attr("stroke", "none");
 
 	node.append("text")
 		      .attr("x", -6)
@@ -209,9 +223,9 @@ BodyParticles.prototype.move = function() {
 		var currentPos = p[x].path.getPointAtLength(currentPercent/1.5);
 		if(currentPos.x < p[x].link.target.x) {
       		context.beginPath();
-      		context.fillStyle = p[x].link.color;
+      		context.fillStyle = p[x].color;
       		context.arc(m.left + currentPos.x, m.top + currentPos.y + p[x].offset,
-      					p[x].link.particleSize, 0, 2*Math.PI);
+      		p[x].size, 0, 2*Math.PI);
       		context.fill();
 		} else {
 			if (!("done" in p[x])) {
@@ -226,23 +240,35 @@ BodyParticles.prototype.move = function() {
 	}
 }
 
-dispatch.on("nodeClicked.particles", function(_main, _this) {
-	if(_main.particles.length == 0) {
-		var modelId = d3.selectAll("[name=" + _this.name + "][stroke=" + config.graph.bestLineColor + "]").attr("index");
-		d3.json("http://127.0.0.1:5000/main/" + _this.name + "/model=" + modelId + "/view=all", function(data) {
-		//d3.json("data/" + _this.name.toLowerCase() + "-" + modelId + ".json", function(data) {
-			// update the confusion matrix
-			updateCf(data.confusion_matrix);
-			var opts = {};
-			opts.data = data;
-			opts.width = config.particles.width;
-			opts.height = config.particles.height;
-			opts.margin = config.particles.margin;
-			opts.name = _this.name;
-			opts.element = "#particle-focus-viz";
-			opts.type = "all"
-			var p = new NormalParticles(opts);
-			p.draw();
-		});
-	}
+dispatch.on("nodeClicked.particles", function(_this) {
+	//if(_main.particles.length == 0) {
+		if(_this.name == "Input") {
+			d3.selectAll("." + config.particles.nodeClass).style("opacity", 1);
+		}
+		if(d3.select("." + config.particles.nodeClass).style("cursor") == "pointer") {
+			d3.selectAll("." + config.particles.nodeClass).style("cursor","");
+			var modelId = d3.selectAll("[name=" + _this.name + "][stroke=" + config.graph.bestLineColor + "]").attr("index");
+			d3.json("http://127.0.0.1:5000/main/" + _this.name + "/model=" + modelId + "/view=all", function(data) {
+			//d3.json("data/" + _this.name.toLowerCase() + "-" + modelId + ".json", function(data) {
+				// update the confusion matrix
+				d3.selectAll("." + config.particles.nodeClass).style("opacity", 0.2);
+				d3.select("g[name=" + _this.name + "]").style("opacity", 1);
+				updateCf(data.confusion_matrix);
+				var opts = {};
+				opts.data = data;
+				opts.width = config.particles.width;
+				opts.height = config.particles.height;
+				opts.margin = config.particles.margin;
+				opts.name = _this.name;
+				opts.element = "#particle-focus-viz";
+				opts.type = "all";
+				opts.fixedLinks = [
+							{"source":0,"target":1,"value":1},
+							{"source":0,"target":2,"value":1}
+					];
+				var p = new NormalParticles(opts);
+				p.draw();
+			});
+		}
+	//}
 });

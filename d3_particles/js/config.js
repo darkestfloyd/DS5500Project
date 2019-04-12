@@ -19,6 +19,7 @@ var config = {
 		parent : "#graphs"
 	},
 	particles: {
+		nodeClass: "node",
 		element: "#particle-viz",
 		width : 300,
 		height : 500,
