@@ -62,6 +62,9 @@ font: 12px sans-serif;
 border: 1px solid gray;
 border-radius: 8px;
 pointer-events: none;
+font-family: "Segoe UI";
+background-color: #696969;
+color: #fff;
 }
 
 .axis path,
@@ -91,4 +94,33 @@ pointer-events: none;
 
 .axis {
 	font-size: 0.75em;
+}
+
+/*  MURA layout */
+#header {
+	background: url(../img/bg-pattern.png), linear-gradient(to left, #c50c3e, #a90531);
+	padding: 50px;
+}
+
+#page-subtitle { 
+	color: white;
+	text-align: center;
+}
+
+#title-image {
+	max-width: 200px;
+	vertical-align: middle;
+}
+
+.p {
+	font-size: 1.2em;
+}
+
+.btn-primary {
+	background-color: #c50c3e;
+	border-color: #a90531;
+}
+
+#fp, #fn {
+	background-color: rgba(200,0,0,0.5);
 }
