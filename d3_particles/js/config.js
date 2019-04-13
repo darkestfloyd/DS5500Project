@@ -27,7 +27,7 @@ var config = {
 			top: 50,
 			right: 50,
 			bottom: 50,
-			left: 50
+			left: 10
 		}
 	}
 }
