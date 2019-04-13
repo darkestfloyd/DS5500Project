@@ -67,11 +67,16 @@ NormalParticles.prototype.addNodes = function() {
 								d3.select(".tooltip").transition()
                 					.duration(200)	
                 					.style("opacity", .9);
-
-                				d3.select(".tooltip").html("<p>" + d.name + " : " + ((d.accuracy).toFixed(2))
-                										+ "<p>Other : " + ((1-d.accuracy)).toFixed(2))
+                				if(_this.type == "all") {
+                					d3.select(".tooltip").html("<p>" + d.name + " : " + (((d.accuracy).toFixed(2)*100).toFixed(2) + "%")
+                										+ "<p>Other : " + (((1-d.accuracy)).toFixed(2)*100).toFixed(2) + "%")
                 									.style("left", (d3.event.pageX - 100) + "px")		
                 									.style("top", (d3.event.pageY - 28) + "px");
+                				} else {
+                					d3.select(".tooltip").html("<p>" + d.name + "</p>")
+                									.style("left", (d3.event.pageX - 100) + "px")		
+                									.style("top", (d3.event.pageY - 28) + "px");
+                				}
 							})
 							.on("mouseout", function(d) {
 								d3.select(".tooltip")
@@ -93,7 +98,7 @@ NormalParticles.prototype.addNodes = function() {
 			.attr("width", _this.sankey.nodeWidth())
 			.attr("opacity", 1)
 			.attr("id", function(d) { return d.name + "-white"; })
-			.attr("fill", "#fff")
+			.attr("fill", "gray")
 			.on("click", function(d) {
 				dispatch.falseClicked(d);
 			});
@@ -130,7 +135,7 @@ NormalParticles.prototype.addNodes = function() {
 					.duration(200)	
 					.style("opacity", .9);
 
-				d3.select(".tooltip").html("<p>" + v.name + " : " + ((v.h).toFixed(2)))
+				d3.select(".tooltip").html("<p>" + v.name + " : " + ((v.h).toFixed(2)*100).toFixed(2) + "%</p>")
 									.style("left", (d3.event.pageX - 100) + "px")		
 									.style("top", (d3.event.pageY - 28) + "px");
 				})
@@ -157,8 +162,8 @@ NormalParticles.prototype.addNodes = function() {
                 					.duration(200)	
                 					.style("opacity", .9);
 
-                				d3.select(".tooltip").html("<p>" + d.name + " : " + ((d.accuracy).toFixed(2))
-                										+ "<p>Other : " + ((1-d.accuracy)).toFixed(2))
+                				d3.select(".tooltip").html("<p>" + d.name + " : " + (((d.accuracy).toFixed(2)*100).toFixed(2) + "%")
+                										+ "<p>Other : " + (((1-d.accuracy)).toFixed(2)*100).toFixed(2) + "%")
                 									.style("left", (d3.event.pageX - 100) + "px")		
                 									.style("top", (d3.event.pageY - 28) + "px");
 							})

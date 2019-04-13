@@ -159,14 +159,15 @@ BodyParticles.prototype.addNodes = function() {
 								dispatch.nodeClicked(d);
 							})
 							.on("mouseover", function(d) {
-								d3.select(".tooltip").transition()
+								if(d.name != "Input") {
+									d3.select(".tooltip").transition()
                 					.duration(200)	
                 					.style("opacity", .9);
-
-                				d3.select(".tooltip").html("<p>" + d.name + " : " + ((d.accuracy).toFixed(2))
-                										+ "<p>Other : " + ((1-d.accuracy)).toFixed(2))
+                					d3.select(".tooltip").html("<p>" + d.name + " : " + (((d.accuracy).toFixed(2)*100).toFixed(2) + "%")
+                										+ "<p>Other : " + (((1-d.accuracy)).toFixed(2)*100).toFixed(2) + "%")
                 									.style("left", (d3.event.pageX + 10) + "px")		
                 									.style("top", (d3.event.pageY - 28) + "px");
+                				}
 							})
 							.on("mouseout", function(d) {
 								d3.select(".tooltip")
@@ -184,7 +185,6 @@ BodyParticles.prototype.addNodes = function() {
 	node.append("rect")
 			.attr("height", function(d) { return d.dy; })
 			.attr("width", _this.sankey.nodeWidth())
-			.attr("opacity", 1)
 			.attr("id", function(d) { return d.name + "-white"; })
 			.attr("fill", "#fff")
 			.attr("stroke", "none");
