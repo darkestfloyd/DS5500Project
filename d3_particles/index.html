@@ -8,39 +8,142 @@
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.9/d3.min.js" type="text/javascript"></script>
+		<script src="js/jquery.waypoints.min.js" type="text/javascript"></script>
 		<script src="js/d3.sankey.js" type="text/javascript"></script>
 
 		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css" />
 	</head>
 	<body>
-		<div class="container">
-			<div class="modal" tabindex="-1" role="dialog">
-			  <div class="modal-dialog" role="document">
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <h5 class="modal-title">What is MURA?</h5>
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			          <span aria-hidden="true">&times;</span>
-			        </button>
-			      </div>
-			      <div class="modal-body">
-			        <p>MURA (musculoskeletal radiographs) is a large dataset of bone X-rays. Algorithms are tasked with determining whether an X-ray study is normal or abnormal.</p>
-			      </div>
-			      <div class="modal-footer">
-			        <button id="prev" type="button" class="btn btn-primary">Previous</button>
-			        <button id="next" type="button" class="btn btn-primary">Next</button>
-			      </div>
-			    </div>
-			  </div>
+		<div class="modal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+			  		<div class="modal-header">
+			    		<h5 class="modal-title">What is MURA?</h5>
+			    		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			      				<span aria-hidden="true">&times;</span>
+			    		</button>
+			  		</div>
+			  		<div class="modal-body">
+			    		<p>MURA (musculoskeletal radiographs) is a large dataset of bone X-rays. Algorithms are tasked with determining whether an X-ray study is normal or abnormal.</p>
+			  		</div>
+			  		<div class="modal-footer">
+			    		<button id="prev" type="button" class="btn btn-primary">Previous</button>
+			    		<button id="next" type="button" class="btn btn-primary">Next</button>
+			  		</div>
+				</div>
 			</div>
-			<center><h1> MURA </h1></center>
+		</div>
+		<section id="header">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12 ">
+						<center><img id="title-image" src="img/logo.svg"></center>
+						<h2 id="page-subtitle">Bone X-Ray Deep Learning Competition</h2>
+					</div>
+				</div>
+			</div>
+		</section>
+		<div class="container">
+			<hr />
+			<div class="row">
+				<div class="col-md-12">
+					<center><h1>What is MURA?</h1></center>
+					<blockquote>
+						<p class="p">MURA (musculoskeletal radiographs) is a large dataset of bone X-rays. Algorithms are tasked with determining whether an X-ray study is normal or abnormal.</p>
+						<p class="p">Musculoskeletal conditions affect more than 1.7 billion people worldwide, and are the most common cause of severe, long-term pain and disability, with 30 million emergency department visits annually and increasing.</p>
+
+						<p class="p"> More information on the dataset can be found <a href="https://stanfordmlgroup.github.io/competitions/mura/" target="_blank">here.</a>
+					</blockquote>
+				</div>
+			</div>
+			<hr />
+			<div class="row">
+				<div class="col-md-12">
+					<center><h1>Architecture</h1></center>
+					<blockquote>
+						<div class="row">
+							<div class="col-md-12">
+								<p class="p">Every X-ray image can be a normal or abnormal:</p>
+								<ol>
+									<li>Elbow</li>
+									<li>Finger</li>
+									<li>Forearm</li>
+									<li>Hand</li>
+									<li>Humerus</li>
+									<li>Shoulder</li>
+									<li>Wrist</li>
+								</ol>
+								<p class="p">Conceptually, this is a hierarchical convolutional neural network involving two steps:</p>
+								<ol>
+									<li>Classifying the body part into 1 of 7 types.</li>
+									<li>Running the image through 1 of the 7 classifiers built for each body part</li>
+								</ol>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<img class="img-fluid" src="img/architecture.png" />
+							</div>
+						</div>
+						<h4>What is AlexNet?</h4>
+						<blockquote>
+								<p class="p">AlexNet a convolutional neural network with 5 convolutional layers and 3 fully connected layers. AlexNet is used to predict the body part. Further more details on AlexNet can be found <a href="https://en.wikipedia.org/wiki/AlexNet" target="_blank">here.</a></p>
+						</blockquote>
+						<h4>What is DenseNet?</h4>
+						<blockquote>
+								<p class="p">DenseNet is a network architecture where each layer is directly connected to every other layer in a feed-forward fashion (within each dense block). Further more details on DenseNet can be found <a href="https://github.com/liuzhuang13/DenseNet" target="_blank">here.</a>
+								<br />
+								For each of the 7 body parts, <b>we trained 16 different variants of DenseNet</b> and chose the best 1 for each body part. </p>
+						</blockquote>
+				</div>
+			</div>
+			<hr />
+			<div class="row">
+				<div class="col-md-12">
+					<center><h1>Results</h1></center>
+					<blockquote>
+						<div class="row">
+							<div id="arch" class="col-md-12">
+							</div>
+						</div>
+					</blockquote>
+				</div>
+			</div>
+			<hr />
+			<div class="row">
+				<div class="col-md-12">
+					<center><h1>Visualizing Performance</h1></center>
+					<blockquote>
+						<div class="row">
+							<p class="p">The visualization below illustrates the performance of the 2-level models - first one for body part classification and second one for abnormality classification.</p>
+							<p class="p">The true label of the image is encoded in the color of the particle. The predicted label of the image is encoded in the direction of the flow. For example, a red particle flowing to the Finger node can be interpreted as <i>An elbow has been classified as Finger.</i></p>
+							<p class="p">
+								The height of the bar indicates the precision i.e. What percent of predicted parts are correct? For example, a 95% precision on Elbow means that <i>Out of 100 parts predicted as elbow, 95 are actually elbows.</i>
+							</p>
+						</div>
+					</blockquote>
+				</div>
+			</div>
+			<hr />
 			<div class="row">
 				<div class="container container-fluid">
 					<div class="row">
-						<div class="col-md-7">
+						<div id="particles" class="col-md-7">
 							<div class="row">
-								<div class="col-md-6" id="particle-viz"></div>
-								<div class="col-md-6" id="particle-focus-viz"></div>
+								<div class="col-md-6">
+									<center>Body Classification 
+										<i class="fa fa-info-circle" content="AlexNet results. Click on a part for more details"></i></center>
+									<div class="row">
+										<div class="col-md-12" id="particle-viz"></div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<center>Abnormality Classification <i class="fa fa-info-circle" content="DenseNet results"></i></center>
+									<div class="row">
+										<div class="col-md-12" id="particle-focus-viz"></div>
+									</div>
+								</div>
 							</div>
 						</div>
 						<div id="confusion-and-graphs" class="col-md-5">
@@ -53,19 +156,19 @@
 												<td colspan="3" align="center">Predicted</td>
 											</tr>
 											<tr>
-												<td>#</td>
-												<td>T</td>
-												<td>F</td>
+												<td></td>
+												<td>Normal</td>
+												<td>Abnormal</td>
 											</tr>
 											<tr>
-												<td>T</td>
-												<td id="tp">382</td>
-												<td id="fn">102</td>
+												<td>Normal</td>
+												<td id="tp" class="faa" content="Correctly predicted as normal">382</td>
+												<td id="fn" class="faa" content="Incorrecly predicted as abnormal">102</td>
 											</tr>
 											<tr>
-												<td>F</td>
-												<td id="fp">180</td>
-												<td id="tn">185</td>
+												<td>Abnormal</td>
+												<td id="fp" class="faa" content="Incorrecly predicted as normal">180</td>
+												<td id="tn" class="faa" content="Correctly predicted as  abnormal">185</td>
 											</tr>
 										</table>
 									</div>
@@ -110,6 +213,7 @@
 		</div>
 	</body>
 	<script type="text/javascript" src="js/config.js"></script>
+	<script type="text/javascript" src="js/tree.js"></script>
 	<script type="text/javascript" src="js/dispatch.js"></script>
 	<script type="text/javascript" src="js/particle.js"></script>
 	<script type="text/javascript" src="js/classifier.js"></script>
@@ -124,11 +228,12 @@
 	</script>
 	<script type="text/javascript">
 		var onLoad = function() {
+
 			// particles
 			d3.json("http://localhost:5000/main", function(data) {
 			//d3.json("data/graph.json", function(data) {
 				// update the confusion matrix
-				// updateCf(data.confusion_matrix);
+				updateCf(data.confusion_matrix);
 
 				var opts = {
 					data: data,
@@ -172,6 +277,25 @@
 					var graph = new Graph(opts);
 				});
 			});
+
+
+			// tooltips
+			d3.selectAll(".fa,.faa")
+			.on("mouseover", function() {
+				var content = d3.select(this).attr("content");
+				d3.select(".tooltip").transition()
+				.duration(200)	
+				.style("opacity", .9);
+				d3.select(".tooltip").html(content)
+								.style("left", (d3.event.pageX + 10) + "px")		
+								.style("top", (d3.event.pageY - 28) + "px");
+			})
+			.on("mouseout", function(d) {
+				d3.select(".tooltip")
+					.transition()		
+					.duration(500)		
+					.style("opacity", 0);
+			});
 		}
 		
 	</script>
@@ -206,31 +330,22 @@
 			}
 		}
 		$(document).ready(function() {
-			var current = 0;
-			loadModal(current);
-			checkOptions(current);
-			$(".modal").modal("show");
-
-			$("#next").click(function() {
-				if(current < wizard.length) {
-					current = current + 1;
-					checkOptions(current);
-					loadModal(current);
-				}
+			var wpResults = new Waypoint({
+				element: document.getElementById('arch'),
+				handler: function() {
+					update(root);
+				},
+				offset: '75%'
 			});
 
-			$("#prev").click(function() {
-				if(current > -1) {
-					current = current - 1;
-					checkOptions(current);
-					loadModal(current);
-				}
+			var wpviz = new Waypoint({
+				element: document.getElementById('particles'),
+				handler: function() {
+					onLoad();
+					this.destroy();
+				},
+				offset: '75%'
 			});
-
-
-			$('.modal').on("hidden.bs.modal", function () {
-    			onLoad();
-			})
 		});
 	</script>
 </html>
