@@ -203,7 +203,7 @@ dispatch.on("trueClicked", function(_this) {
 	if(d3.select("." + config.particles.nodeClass).style("cursor") == "pointer") {
 		d3.selectAll("." + config.particles.nodeClass).style("cursor","");
 		var modelId = d3.selectAll("[name=" + _this.name + "][stroke=" + config.graph.bestLineColor + "]").attr("index");
-		d3.json("http://127.0.0.1:5000/main/" + _this.name + "/model=" + modelId + "/view=classified", function(data) {
+		d3.json(config.baseAPI + "/" + _this.name + "/model=" + modelId + "/view=classified", function(data) {
 		//d3.json("data/" + _this.name.toLowerCase() + "-" + modelId + ".json", function(data) {
 
 			// update the confusion matrix
@@ -231,7 +231,7 @@ dispatch.on("falseClicked", function(_this) {
 	if(d3.select("." + config.particles.nodeClass).style("cursor") == "pointer") {
 		d3.selectAll("." + config.particles.nodeClass).style("cursor","");
 		var modelId = d3.selectAll("[name=" + _this.name + "][stroke=" + config.graph.bestLineColor + "]").attr("index");
-		d3.json("http://127.0.0.1:5000/main/" + _this.name + "/model=" + modelId + "/view=misclassified/all", function(data) {
+		d3.json(config.baseAPI + "/" + _this.name + "/model=" + modelId + "/view=misclassified/all", function(data) {
 			// update the confusion matrix
 			updateCf(data.confusion_matrix);
 			var opts = {};
@@ -257,7 +257,7 @@ dispatch.on("falsePartClicked", function(_this, part) {
 	if(d3.select("." + config.particles.nodeClass).style("cursor") == "pointer") {
 		d3.selectAll("." + config.particles.nodeClass).style("cursor","");
 		var modelId = d3.selectAll("[name=" + _this.name + "][stroke=" + config.graph.bestLineColor + "]").attr("index");
-		d3.json("http://127.0.0.1:5000/main/" + _this.name + "/model=" + modelId + "/view=misclassified/" + part, function(data) {
+		d3.json(config.baseAPI + "/" + _this.name + "/model=" + modelId + "/view=misclassified/" + part, function(data) {
 		//d3.json("data/" + _this.name.toLowerCase() + "-" + modelId + ".json", function(data) {
 			// update the confusion matrix
 			updateCf(data.confusion_matrix);

@@ -230,8 +230,7 @@
 		var onLoad = function() {
 
 			// particles
-			d3.json("http://localhost:5000/main", function(data) {
-			//d3.json("data/graph.json", function(data) {
+			d3.json(config.baseAPI, function(data) {
 				// update the confusion matrix
 				updateCf(data.confusion_matrix);
 

@@ -1,5 +1,6 @@
 var config = {
 	parts : ["Elbow", "Finger", "Forearm", "Hand", "Humerus", "Shoulder", "Wrist"],
+	baseAPI: "http://localhost:5000/main",
 	graph: {
 		width : 120,
 		height : 120,

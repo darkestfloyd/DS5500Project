@@ -241,15 +241,13 @@ BodyParticles.prototype.move = function() {
 }
 
 dispatch.on("nodeClicked.particles", function(_this) {
-	//if(_main.particles.length == 0) {
 		if(_this.name == "Input") {
 			d3.selectAll("." + config.particles.nodeClass).style("opacity", 1);
 		}
 		if(d3.select("." + config.particles.nodeClass).style("cursor") == "pointer") {
 			d3.selectAll("." + config.particles.nodeClass).style("cursor","");
 			var modelId = d3.selectAll("[name=" + _this.name + "][stroke=" + config.graph.bestLineColor + "]").attr("index");
-			d3.json("http://127.0.0.1:5000/main/" + _this.name + "/model=" + modelId + "/view=all", function(data) {
-			//d3.json("data/" + _this.name.toLowerCase() + "-" + modelId + ".json", function(data) {
+			d3.json(config.baseAPI + "/" + _this.name + "/model=" + modelId + "/view=all", function(data) {
 				// update the confusion matrix
 				d3.selectAll("." + config.particles.nodeClass).style("opacity", 0.2);
 				d3.select("g[name=" + _this.name + "]").style("opacity", 1);
@@ -270,5 +268,4 @@ dispatch.on("nodeClicked.particles", function(_this) {
 				p.draw();
 			});
 		}
-	//}
 });
