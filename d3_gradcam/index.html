@@ -21,18 +21,20 @@
      <div>
        <!-- buttons -->
        <div style="float: left;width: 10%;margin-top: 200;margin-left: 30;">
-         <select>
-          <option value="all">All studies</option>
-          <option value="finger">Finger</option>
-          <option value="hand">Hand</option>
-          <option value="wrist">Wrist</option>
-          <option value="forearm">Forearm</option>
-          <option value="elbow">Elbow</option>
-          <option value="humerus">Humerus</option>
-          <option value="shoulder">Shoulder</option>
+         <select id='study_selection'>
+          <option value="0">All studies</option>
+          <option value="3">Finger</option>
+          <option value="7">Hand</option>
+          <option value="5">Wrist</option>
+          <option value="6">Forearm</option>
+          <option value="4">Elbow</option>
+          <option value="2">Humerus</option>
+          <option value="1">Shoulder</option>
 
         </select> 
         <br>
+        <input type="file" id="radiograph_upload" name="upload"
+       accept="image/jpg" style="margin-top: 10;">
         <button style="margin-top: 10;" onclick="generate_cams()">
           Generate
         </button>
@@ -47,48 +49,18 @@
 
   <!-- button hanler -->
   <script>
-    var clicked = 0;
+    var select_study = document.getElementById('study_selection');
+    var file_upload = document.getElementById('radiograph_upload');
     function generate_cams() {
-      if (clicked == 0) {
-        clicked = 1;
-
-        // study
-        d3.select("#studyCam_MAIN").attr('xlink:href', 'cams/alex/CAM0_20.jpg');
-        d3.select("#studyCam_SUB_1").attr('xlink:href', 'cams/alex/CAM0_5.jpg');
-        d3.select("#studyCam_SUB_2").attr('xlink:href', 'cams/alex/CAM0_10.jpg');
-        d3.select("#studyCam_SUB_3").attr('xlink:href', 'cams/alex/CAM0_15.jpg');
-        d3.select("#studyCam_SUB_4").attr('xlink:href', 'cams/alex/CAM0_20.jpg');
-
-        // class
-        d3.select("#classCam_MAIN").attr('xlink:href', 'cams/dense/CAM2_20.jpg');
-        d3.select("#classCam_SUB_1").attr('xlink:href', 'cams/dense/CAM2_5.jpg');
-        d3.select("#classCam_SUB_2").attr('xlink:href', 'cams/dense/CAM2_10.jpg');
-        d3.select("#classCam_SUB_3").attr('xlink:href', 'cams/dense/CAM2_15.jpg');
-        d3.select("#classCam_SUB_4").attr('xlink:href', 'cams/dense/CAM2_20.jpg');
-        
-        // subtitle
-        d3.select("#studyCam_subtitle").text("True: Forearm; Pred: Elbow");
-        d3.select("#classCam_subtitle").text("True: Normal; Pred: Normal");
+      if (file_upload.value != "") {
+        console.log("Add image: " + file_upload.value);
       } else {
-        clicked = 0;
-
-        // study
-        d3.select("#classCam_MAIN").attr('xlink:href', 'cams/CAM1_20.jpg');
-        d3.select("#classCam_SUB_1").attr('xlink:href', 'cams/CAM1_5.jpg');
-        d3.select("#classCam_SUB_2").attr('xlink:href', 'cams/CAM1_10.jpg');
-        d3.select("#classCam_SUB_3").attr('xlink:href', 'cams/CAM1_15.jpg');
-        d3.select("#classCam_SUB_4").attr('xlink:href', 'cams/CAM1_20.jpg');
-
-        // class
-        d3.select("#studyCam_MAIN").attr('xlink:href', 'cams/CAM0_20.jpg');
-        d3.select("#studyCam_SUB_1").attr('xlink:href', 'cams/CAM0_5.jpg');
-        d3.select("#studyCam_SUB_2").attr('xlink:href', 'cams/CAM0_10.jpg');
-        d3.select("#studyCam_SUB_3").attr('xlink:href', 'cams/CAM0_15.jpg');
-        d3.select("#studyCam_SUB_4").attr('xlink:href', 'cams/CAM0_20.jpg');
-
-        // subtitle
-        d3.select("#studyCam_subtitle").text("True: Hand; Pred: Hand");
-        d3.select("#classCam_subtitle").text("True: Normal; Pred: Abnormal");
+        console.log(select_study.value)
+        // TODO: add call to server, and update results
+        updateCams(['cams/alex/CAM0_5.jpg', 'cams/alex/CAM0_10.jpg', 
+          'cams/alex/CAM0_15.jpg', 'cams/alex/CAM0_20.jpg'], "Hand", "Hand", 
+          ['cams/dense/CAM2_5.jpg', 'cams/dense/CAM2_10.jpg', 
+          'cams/dense/CAM2_15.jpg', 'cams/dense/CAM2_20.jpg'], "Normal", "Normal");
       }
     }
   </script>
