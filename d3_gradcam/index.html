@@ -53,14 +53,16 @@
     var file_upload = document.getElementById('radiograph_upload');
     function generate_cams() {
       if (file_upload.value != "") {
+        // 
         console.log("Add image: " + file_upload.value);
       } else {
-        console.log(select_study.value)
-        // TODO: add call to server, and update results
-        updateCams(['cams/alex/CAM0_5.jpg', 'cams/alex/CAM0_10.jpg', 
-          'cams/alex/CAM0_15.jpg', 'cams/alex/CAM0_20.jpg'], "Hand", "Hand", 
-          ['cams/dense/CAM2_5.jpg', 'cams/dense/CAM2_10.jpg', 
-          'cams/dense/CAM2_15.jpg', 'cams/dense/CAM2_20.jpg'], "Normal", "Normal");
+        d3.json('http://127.0.0.1:5000/main' + '/' + select_study.value).then(function(data){
+          console.log(data);
+          study_data = data["alexNet"];
+          class_data = data["denseNet"];
+          updateCams(study_data["paths"], study_data["true_label"], study_data["pred_label"],
+                     class_data["paths"], class_data["true_label"], class_data["pred_label"]);
+        });
       }
     }
   </script>
