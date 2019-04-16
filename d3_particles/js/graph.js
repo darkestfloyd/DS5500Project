@@ -153,16 +153,18 @@ Graph.prototype.addLine = function() {
 
 // listeners
 dispatch.on("lineClicked.graph", function(_this, element) {
-	_this.best = d3.select(element).attr("index");
-	d3.selectAll("[name=" + _this.name + "]")
-		.style("stroke", _this.lineColor)
-		.attr("stroke", _this.lineColor);
-	d3.selectAll("[name=" + _this.name + "][index='" + _this.best +"']")
-		.style("stroke", _this.bestLineColor)
-		.attr("stroke", _this.bestLineColor);
+	if(d3.select("." + config.particles.nodeClass).style("cursor") == "pointer") {
+		_this.best = d3.select(element).attr("index");
+		d3.selectAll("[name=" + _this.name + "]")
+			.style("stroke", _this.lineColor)
+			.attr("stroke", _this.lineColor);
+		d3.selectAll("[name=" + _this.name + "][index='" + _this.best +"']")
+			.style("stroke", _this.bestLineColor)
+			.attr("stroke", _this.bestLineColor);
 
-	// dispatch
-	dispatch.nodeClicked(_this);
+		// dispatch
+		dispatch.nodeClicked(_this);
+	}
 });
 
 dispatch.on("plusClicked.graph", function(_this) {
