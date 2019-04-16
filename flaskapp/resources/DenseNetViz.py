@@ -111,12 +111,12 @@ class DenseNetViz(Resource):
                       self.nkeys[2] : self.accuracy_part}]                             #accuracy
        
         try:
-            accNormal = float(tp/(tp+fp))
-            accAbnormal = float(tn/(tn+fn))
+            accNormal = float(tn/(tn+fn))
+            accAbnormal = float(tp/(tp+fp))
             
         except ZeroDivisionError:
-            accNormal = tp
-            accAbnormal = tn
+            accNormal = tn
+            accAbnormal = tp
 
         self.nodes.extend([
             {self.nkeys[0] : self.classes[0], 
