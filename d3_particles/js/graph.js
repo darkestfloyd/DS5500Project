@@ -25,14 +25,22 @@ Graph.prototype.draw = function() {
 	d3.select(this.element).html("");
 
 	// add title and maximize
-	d3.select(this.element).append("center").text(this.name);
+	d3.select(this.element).append("center").text(this.name).style("font-weight", "bold");
 
 	if(this.type == "thumb") {
-		d3.select(this.element).append("center").text("[+]").attr("class", "plus").on("click", function() {
+		d3.select(this.element).append("center")
+		.append("i")
+		.style("cursor", "pointer")
+		.attr("class", "plus fa fa-plus-circle")
+		.on("click", function() {
 			dispatch.plusClicked(_this);
 		});
 	} else {
-		d3.select(this.element).append("center").text("[-]").attr("class", "minus").on("click", function() {
+		d3.select(this.element).append("center")
+		.append("i")
+		.style("cursor", "pointer")
+		.attr("class", "minus fa fa-minus-circle")
+		.on("click", function() {
 			dispatch.minusClicked(_this);
 		});
 	}
@@ -48,7 +56,7 @@ Graph.prototype.draw = function() {
 
 	// add pan and zoom for max
 	if(this.type != "thumb") {
-		svg.call(d3.behavior.zoom().on("zoom", function () {
+		svg.call(d3.behavior.zoom().scaleExtent([1, 50]).on("zoom", function () {
 			svg.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")")
 		}));
 	}
@@ -158,7 +166,7 @@ dispatch.on("lineClicked.graph", function(_this, element) {
 });
 
 dispatch.on("plusClicked.graph", function(_this) {
-	d3.select(config.graph.parent).transition().style("opacity", 0.1);
+	d3.select(config.graph.parent).transition().style("opacity", 0);
 	_this.width = config.graph.max.width;
 	_this.height = config.graph.max.height;
 	_this.element = config.graph.max.parent;

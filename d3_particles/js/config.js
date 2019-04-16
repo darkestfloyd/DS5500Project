@@ -2,7 +2,7 @@ var config = {
 	parts : ["Elbow", "Finger", "Forearm", "Hand", "Humerus", "Shoulder", "Wrist"],
 	baseAPI: "http://localhost:5000/main",
 	graph: {
-		width : 120,
+		width : 150,
 		height : 120,
 		margin: {
 			top: 20,
@@ -13,8 +13,8 @@ var config = {
 		lineColor: "gray",
 		bestLineColor: "red",
 		max: {
-			width: 240,
-			height: 240,
+			width: 450,
+			height: 300,
 			parent: "#maximize-graph" 
 		},
 		parent : "#graphs"
