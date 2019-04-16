@@ -83,9 +83,9 @@ class DenseNetViz(Resource):
         y_true = model.Abnormal_Label
         y_pred = model.Abnormal_Prediction
 
-        if(model.shape[0] == 1):
-            tp = 1 if (y_true.iloc[0] == 1 & y_pred.iloc[0] == 1) else 0
-            tn = 1 if (y_true.iloc[0] == 0 & y_pred.iloc[0] == 0) else 0
+        if(model.Abnormal_Label.equals(model.Abnormal_Prediction)):
+            tp = model.shape[0] if(model.Abnormal_Label.iloc[0] == 1) else 0
+            tn = model.shape[0] if(model.Abnormal_Label.iloc[0] == 0) else 0
        
         else:
             tn, fp, fn, tp = confusion_matrix(y_true = model.Abnormal_Label,
@@ -111,12 +111,12 @@ class DenseNetViz(Resource):
                       self.nkeys[2] : self.accuracy_part}]                             #accuracy
        
         try:
-            accNormal = float(tp/(tp+fp))
-            accAbnormal = float(tn/(tn+fn))
+            accNormal = float(tn/(tn+fn))
+            accAbnormal = float(tp/(tp+fp))
             
         except ZeroDivisionError:
-            accNormal = tp
-            accAbnormal = tn
+            accNormal = tn
+            accAbnormal = tp
 
         self.nodes.extend([
             {self.nkeys[0] : self.classes[0], 
@@ -137,5 +137,6 @@ class DenseNetViz(Resource):
             self.links.extend([{ self.lkeys[0] : 0,                                           #source
                      self.lkeys[1] : int(row[0][1])+1,                                        #tagert
                      self.lkeys[2] : 1,                                                       #value
-                     self.lkeys[3] : int(row[1]),                                             #count
+                     self.lkeys[3] : int(row[1]) if row[1] < 10 
+                                                 else int(row[1]/10),                                             #count
                      self.lkeys[4] : self.color[self.classes[row[0][2]]]}])                   #color
