@@ -36,8 +36,7 @@ class AlexNetViz(Resource):
              links.extend([{'source' : 0,
                   'target' : pred_label+1,
                  'value' : 1,
-                 'count' : int(label_counts[label]) 
-                            if label_counts[label]<10 else int(label_counts[label]/10),
+                 'count' : int(label_counts[label]), 
                  'color' : self.color[self.body_parts[label]]
                  }for label in label_counts.keys()])
        
