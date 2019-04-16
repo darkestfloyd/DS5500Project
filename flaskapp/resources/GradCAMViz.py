@@ -10,7 +10,7 @@ class GradCAMViz(Resource):
         self.body_parts = kwargs['body_parts']
         self.img_id = 0
         self.prefix = 'CAM'
-        self.iter = [5, 10, 15, 20, 25]
+        self.iter = [5, 10, 15, 20]
         self.path = kwargs['path']
         self.abnClass = ['Normal', 'Abnormal']
         self.part_imgs = kwargs['part_imgs']
@@ -42,7 +42,7 @@ class GradCAMViz(Resource):
                        'true_label' : self.abnClass[df.Abnormal_Label[idx].astype(int)],
                        'paths' : self.img2_path}
             
-            return {'set1' : alexNet, 'set2' : denseNet}
+            return {'alexNet' : alexNet, 'denseNet' : denseNet}
         
         else:
             category = str(random.randint(1,7))
