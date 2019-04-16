@@ -83,9 +83,9 @@ class DenseNetViz(Resource):
         y_true = model.Abnormal_Label
         y_pred = model.Abnormal_Prediction
 
-        if(model.shape[0] == 1):
-            tp = 1 if (y_true.iloc[0] == 1 & y_pred.iloc[0] == 1) else 0
-            tn = 1 if (y_true.iloc[0] == 0 & y_pred.iloc[0] == 0) else 0
+        if(model.Abnormal_Label.equals(model.Abnormal_Prediction)):
+            tp = model.shape[0] if(model.Abnormal_Label.iloc[0] == 1) else 0
+            tn = model.shape[0] if(model.Abnormal_Label.iloc[0] == 0) else 0
        
         else:
             tn, fp, fn, tp = confusion_matrix(y_true = model.Abnormal_Label,
