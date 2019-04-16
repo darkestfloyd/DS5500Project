@@ -137,5 +137,6 @@ class DenseNetViz(Resource):
             self.links.extend([{ self.lkeys[0] : 0,                                           #source
                      self.lkeys[1] : int(row[0][1])+1,                                        #tagert
                      self.lkeys[2] : 1,                                                       #value
-                     self.lkeys[3] : int(row[1]),                                             #count
+                     self.lkeys[3] : int(row[1]) if row[1] < 10 
+                                                 else int(row[1]/10),                                             #count
                      self.lkeys[4] : self.color[self.classes[row[0][2]]]}])                   #color
