@@ -12,7 +12,7 @@ class GradCAMUpload(Resource):
 
     def get(self, data):
 
-        save_prefix = '../d3_gradcam/'
+        save_prefix = '../client/'
         rid = np.random.randint(1000)
         original_image = 'cams/temp/input_image_{0}.png'.format(rid)
         alex_cam_image = 'cams/temp/alex_cam_{0}.jpg'.format(rid)
