@@ -186,7 +186,7 @@ function updateCams(new_study_paths, study_true, study_pred,
   d3.select("#studyCam_SUB_4").attr('xlink:href', new_study_paths[3]);
 
   // class
-  d3.select("#classCam_MAIN").attr('xlink:href', new_class_paths[0]);
+  d3.select("#classCam_MAIN").attr('xlink:href', new_class_paths[3]);
   d3.select("#classCam_SUB_1").attr('xlink:href', new_class_paths[0]);
   d3.select("#classCam_SUB_2").attr('xlink:href', new_class_paths[1]);
   d3.select("#classCam_SUB_3").attr('xlink:href', new_class_paths[2]);
