@@ -255,6 +255,11 @@
           							Generate
         						</button>
         					</div>
+        					<div class="row form-group">
+        						<div class="col-md-offset-4 col-md-4">
+        								<svg id="colorbar_svg" style:"margin-top: 10;"></svg>
+        						</div>
+        					</div>
 						</div>
 						<div class="col-md-10">
 							<div id="svg_div">
@@ -401,4 +406,35 @@
 			});
 		});
 	</script>
+
+	<script>
+	    var select_study = document.getElementById('study_selection');
+	    var file_upload = document.getElementById('radiograph_upload');
+	    var reader  = new FileReader();
+	    reader.onloadend = function () {
+	      d3.json('http://127.0.0.1:5000/upload' + '/' + reader.result).then(function(data) {
+	        console.log(data);
+	        study_data = data["alexNet"];
+	        class_data = data["denseNet"];
+	        updateCams_uploaded(study_data["path"], study_data["label"], class_data["path"],
+	                            class_data["label"]);
+	      });
+	    }
+
+	    function generate_cams() {
+	      if (file_upload.value != "") {
+	        // file uploaded 
+	        reader.readAsDataURL(file_upload.files[0]);
+	      } else {
+	        // option in dropdown
+	        d3.json('http://127.0.0.1:5000/main' + '/' + select_study.value).then(function(data){
+	          console.log(data);
+	          study_data = data["alexNet"];
+	          class_data = data["denseNet"];
+	          updateCams(study_data["paths"], study_data["true_label"], study_data["pred_label"],
+	                     class_data["paths"], class_data["true_label"], class_data["pred_label"]);
+	        });
+	      }
+	    }
+  	</script>
 </html>
