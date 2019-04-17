@@ -412,8 +412,7 @@
 	    var file_upload = document.getElementById('radiograph_upload');
 	    var reader  = new FileReader();
 	    reader.onloadend = function () {
-	      d3.json('http://127.0.0.1:5000/upload' + '/' + reader.result, function(data) {
-	        console.log(data);
+	      d3.json(config.uploadAPI + '/' + reader.result, function(data) {
 	        study_data = data["alexNet"];
 	        class_data = data["denseNet"];
 	        updateCams_uploaded(study_data["path"], study_data["label"], class_data["path"],
@@ -427,7 +426,7 @@
 	        reader.readAsDataURL(file_upload.files[0]);
 	      } else {
 	        // option in dropdown
-	        d3.json('http://127.0.0.1:5000/main' + '/' + select_study.value, function(data){
+	        d3.json(config.baseAPI + '/' + select_study.value, function(data){
 	          console.log(data);
 	          study_data = data["alexNet"];
 	          class_data = data["denseNet"];
