@@ -132,7 +132,7 @@ function addGradView(container, cam_paths, id_prefix,
 }
 
 function updateCams(new_study_paths, study_true, study_pred,
-                    new_class_paths, class_true, class_pred) {
+                    new_class_paths, class_true, class_pred, is_uploaded = false) {
   console.log("updating cams");
 
   // study
@@ -153,6 +153,16 @@ function updateCams(new_study_paths, study_true, study_pred,
   d3.select("#studyCam_subtitle").text("True: " + study_true + "; Pred: " + study_pred);
   d3.select("#classCam_subtitle").text("True: " + class_true + "; Pred: " + class_pred);
 
+}
+
+function updateCams_uploaded(study_path, study_label, class_path, class_label) {
+
+  console.log(study_path)
+  d3.select("#studyCam_MAIN").attr('xlink:href', study_path);
+  d3.select("#classCam_MAIN").attr('xlink:href', class_path);
+
+  d3.select("#studyCam_subtitle").text("Predicted label: " + study_label);
+  d3.select("#classCam_subtitle").text("Predicted label: " + class_label);
 }
 
 // adds a container for the left gradcam and populate

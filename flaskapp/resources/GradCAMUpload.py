@@ -1,7 +1,9 @@
 from flask_restful import Resource
 from PIL import Image
 import base64
-from resources.alex_grad import predict_and_cam
+from resources.alex_grad import alexCAM
+from resources.dense_grad import denseCAM
+import numpy as np
 
 class GradCAMUpload(Resource):
 
@@ -9,12 +11,22 @@ class GradCAMUpload(Resource):
         pass
 
     def get(self, data):
+
+        original_image = '../temp/input_image.png'
+        alex_cam_image = '../temp/alex_cam.jpg'
+        dense_cam_image = '../temp/dense_cam.jpg'
+
         decoded = data.split(',', 1)[1]
-        with open('../temp/temp.png', 'wb') as f:
+        with open(original_image, 'wb') as f:
             f.write(base64.decodebytes(decoded.encode()))
 
-        lab = predict_and_cam('../temp/temp.png', '../temp/temp_cam.jpg')
-        print("predicted: {0}".format(lab))
-        return lab
+        study_label = alexCAM(original_image, alex_cam_image)
+        print("predicted study: {0}".format(study_label))
+
+        class_label = denseCAM(original_image, dense_cam_image)
+        print("predicted class: {0}".format(class_label))
+
+        return {"alexNet": {"path": alex_cam_image, "label": class_label}, 
+                "denseNet": {"path": dense_cam_image, "label": study_label}}
         
 

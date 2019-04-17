@@ -97,7 +97,7 @@ def show_cam_on_image(img, mask):
     heatmap = np.float32(heatmap) / 255
     cam = heatmap + np.float32(img)
     cam = cam / np.max(cam)
-    cv2.imwrite("../temp/code.jpg", np.uint8(255 * cam))
+    #cv2.imwrite("../temp/code.jpg", np.uint8(255 * cam))
     return np.uint8(255 * cam)
 
 class GradCam:
@@ -162,7 +162,7 @@ class GradCam:
 ## main
 #####################
 
-def predict_and_cam(img_path, out_path):
+def alexCAM(img_path, out_path):
     # load alexnet
     alex_net = models.alexnet(pretrained=True)
     for param in alex_net.parameters():
