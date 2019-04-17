@@ -118,3 +118,9 @@ The final linked visualizations are the hyper parameter tuning charts, which ena
 
 ## Conclusion
 
+The visualization tool has been smoothly integrated with our models, conveying all information required to address the tasks defined
+
+All design choices have leveraged course material, including marks, channels, linking, and hovering.
+
+
+http://ec2-3-212-216-62.compute-1.amazonaws.com/
