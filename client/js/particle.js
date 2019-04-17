@@ -221,7 +221,7 @@ BodyParticles.prototype.move = function() {
 		var currentTime = _this.elapsed - p[x].time;
 		var currentPercent = currentTime / 1000 * p[x].path.getTotalLength();
 		var currentPos = p[x].path.getPointAtLength(currentPercent/1.5);
-		if(currentPos.x < p[x].link.target.x) {
+		if(currentPos.x < p[x].link.target.x - 5) {
       		context.beginPath();
       		context.fillStyle = p[x].color;
       		context.arc(m.left + currentPos.x, m.top + currentPos.y + p[x].offset,
