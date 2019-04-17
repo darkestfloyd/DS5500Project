@@ -16,6 +16,31 @@ var svg = d3.select("#svg_div")
   .append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
+var colorbar_svg = d3.select("#colorbar_svg")
+var colorbar_def = colorbar_svg.append("defs");
+var linearGradient = colorbar_def.append("linearGradient").attr("id", "linear-gradient");
+
+linearGradient
+    .attr("x1", "0%")
+    .attr("y1", "100%")
+    .attr("x2", "0%")
+    .attr("y2", "0%");
+//Set the color for the start (0%)
+linearGradient.append("stop")
+    .attr("offset", "0%")
+    .attr("stop-color", "#0102FB") //light blue
+
+//Set the color for the end (100%)
+linearGradient.append("stop")
+    .attr("offset", "100%")
+    .attr("stop-color", "#00FC80"); //dark blue
+//Draw the rectangle and fill with gradient
+colorbar_svg.append("rect")
+    .attr("width", 30)
+    .attr("height", 200)
+    .style("fill", "url(#linear-gradient)");
+
+
 // this function will add a "GradCamView" to a container. This includes the main image with the
 // small multiples and all the related text. 
 //
