@@ -4,6 +4,7 @@ import base64
 from resources.alex_grad import alexCAM
 from resources.dense_grad import denseCAM
 import numpy as np
+import os
 
 class GradCAMUpload(Resource):
 
@@ -12,7 +13,11 @@ class GradCAMUpload(Resource):
 
     def get(self, data):
 
-        save_prefix = '../d3_gradcam/'
+        if not os.path.isdir('../client/cams/temp'):
+            os.mkdir('../client/cams/temp')
+            
+
+        save_prefix = '../client/'
         rid = np.random.randint(1000)
         original_image = 'cams/temp/input_image_{0}.png'.format(rid)
         alex_cam_image = 'cams/temp/alex_cam_{0}.jpg'.format(rid)

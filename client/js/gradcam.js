@@ -186,7 +186,7 @@ function updateCams(new_study_paths, study_true, study_pred,
   d3.select("#studyCam_SUB_4").attr('xlink:href', new_study_paths[3]);
 
   // class
-  d3.select("#classCam_MAIN").attr('xlink:href', new_class_paths[0]);
+  d3.select("#classCam_MAIN").attr('xlink:href', new_class_paths[3]);
   d3.select("#classCam_SUB_1").attr('xlink:href', new_class_paths[0]);
   d3.select("#classCam_SUB_2").attr('xlink:href', new_class_paths[1]);
   d3.select("#classCam_SUB_3").attr('xlink:href', new_class_paths[2]);
@@ -223,12 +223,12 @@ function updateCams_uploaded(study_path, study_label, class_path, class_label) {
   // others
   d3.select("#studyCAM_axis").style("opacity", 0);
   d3.select("#classCAM_axis").style("opacity", 0);
-  d3.select("#studyCAM_iter").style("opacity", 0);
-  d3.select("#classCAM_iter").style("opacity", 0);
+  d3.select("#studyCAM_iter").style("fill", 'white');
+  d3.select("#classCAM_iter").style("fill", 'white');
 
   for (i = 1; i < 5; ++i) {
-    d3.select("#studyCAM_SUBTEXT_" + i).style("opacity", 0);
-    d3.select("#classCAM_SUBTEXT_" + i).style("opacity", 0);
+    d3.select("#studyCAM_SUBTEXT_" + i).style("fill", 'white');
+    d3.select("#classCAM_SUBTEXT_" + i).style("fill", 'white');
   }
 }
 
