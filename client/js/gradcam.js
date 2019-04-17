@@ -223,12 +223,12 @@ function updateCams_uploaded(study_path, study_label, class_path, class_label) {
   // others
   d3.select("#studyCAM_axis").style("opacity", 0);
   d3.select("#classCAM_axis").style("opacity", 0);
-  d3.select("#studyCAM_iter").style("opacity", 0);
-  d3.select("#classCAM_iter").style("opacity", 0);
+  d3.select("#studyCAM_iter").style("fill", 'white');
+  d3.select("#classCAM_iter").style("fill", 'white');
 
   for (i = 1; i < 5; ++i) {
-    d3.select("#studyCAM_SUBTEXT_" + i).style("opacity", 0);
-    d3.select("#classCAM_SUBTEXT_" + i).style("opacity", 0);
+    d3.select("#studyCAM_SUBTEXT_" + i).style("fill", 'white');
+    d3.select("#classCAM_SUBTEXT_" + i).style("fill", 'white');
   }
 }
 
