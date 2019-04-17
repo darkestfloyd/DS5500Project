@@ -41,7 +41,7 @@ class AlexNetViz(Resource):
                  'color' : self.color[self.body_parts[label]]
                  }for label in label_counts.keys()])
        
-        tn, fp, fn, tp = np.divide(cm_all, 7).ravel()
+        tn, fp, fn, tp = cm_all.ravel()
         cm = { self.ckeys[0] : int(tn),
             self.ckeys[1] : int(fp),
             self.ckeys[2] : int(fn),
