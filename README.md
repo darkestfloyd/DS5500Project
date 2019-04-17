@@ -102,11 +102,25 @@ Finally, after receiving all of the feedback, we made sure our visualizations li
 
 ## Final Visualization
 
-propose utilizing a tree-like structure to depict the performance of the model. The initial branches will represent the body part classification task with point marks representing images. The true label of the body part is encoded using the hue color channel. The visualization will employ motion in order to depict which body part the image is classified as, eventually flowing into a stacked bar charts. The stacked bar chart can then be zoomed on to explore the misclassification distribution further. Dependent on which body part the images are classified as, the appropriate model will classify the images as abnormal or normal, with a summary of the results present in a confusion matrix.
+The final visualization is depicted below:
 
-**Insert Image to describe**
+![alt text](images/Model.png)
 
-Also, incorporated with the visualization are hyper parameter tuning charts, which enable the user to modify any of the abnormality detection models. A given set of hyper parameters can be considered λ such that each model 
+The user is able to clearly see a summary of the total results - using the best models - in the confusion matrix. With every point mark representing 10 images, we encode their true body part label using the hue color channel. This hue color channel is also evident in the stacked bar charts, which shows images classified correctly and those that are not. To encode their predicted body part label, we use the spatial position and motion channel. By doing so, we have utilized the top three methods for encoding categorical variables. 
+
+Next, we incorporate interactivity such that the stacked bar chart can be clicked on to explore the misclassification distribution further. By exploring each body part specifically, we enable the confusion matrix to be updated. 
+
+![alt text](images/Model_Overview.png)
+
+The final linked visualizations are the hyper parameter tuning charts, which enable the user to modify any of the abnormality detection models. A given set of hyper parameters can be considered λ such that each λ is composed of a learning rate and weight decay. The line chart was chosen because we are encoding two continuous variables. This enables the user to see a trend. Also, for discriminability purposes we highlight the active hyper parameter model as red which immediately is drawn to the eye.
+
+![alt text](images/hyperparameter.png)
 
 ## Conclusion
 
+The visualization tool has been smoothly integrated with our models, conveying all information required to address the tasks defined
+
+All design choices have leveraged course material, including marks, channels, linking, and hovering.
+
+
+http://ec2-3-212-216-62.compute-1.amazonaws.com/
