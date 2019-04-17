@@ -29,7 +29,7 @@ class GradCAMUpload(Resource):
         class_label = denseCAM(save_prefix + original_image, save_prefix + dense_cam_image, model_path)
         print("predicted class: {0}".format(class_label))
 
-        return {"alexNet": {"path": alex_cam_image, "label": class_label}, 
-                "denseNet": {"path": dense_cam_image, "label": study_label}}
+        return {"alexNet": {"path": alex_cam_image, "label": study_label}, 
+                "denseNet": {"path": dense_cam_image, "label": class_label}}
         
 
