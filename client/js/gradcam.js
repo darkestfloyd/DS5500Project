@@ -53,7 +53,7 @@ colorbar_svg.append("g")
   .attr("x", -15)
   .attr("y", -15)
   .attr("dy", "1em")
-  .style("text-anchor", "middle").text("Activation");
+  .style("text-anchor", "middle").text("Intensity");
 
 // this function will add a "GradCamView" to a container. This includes the main image with the
 // small multiples and all the related text. 
