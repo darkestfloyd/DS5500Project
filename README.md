@@ -2,7 +2,7 @@
 
 ## Motivation
 
-Large high scale musculoskeletal radiographs have played a pivotal part in the intersection of machine learning and the field of medicine.  Existing research leverages radiographs as input data for various machine-learning frameworks in order to help medical practitioners detect diseases at early stages (ex. fractures, cancer, etc.). With radiographs playing a pivotal role in detecting abnormalities, it is important that the framework is sound and mimics the thought process of true radiologists. Because of the latter, we look to implement a model framework composed of multiple convolutional neural networks (CNNs), which will first diagnose the body parts and then feed another model constructed specifically for the given body part, ultimately returning the predicted label for an image. Not only do we look to constructing this model framework, but also we look to integrate it into a visual analytic system, enabling radiologist or data scientist to use. 
+Large high scale musculoskeletal radiographs have played a pivotal part in the intersection of machine learning and the field of medicine.  Existing research leverages radiographs as input data for various machine-learning frameworks in order to help medical practitioners detect diseases at early stages (ex. fractures, cancer, etc.). With radiographs playing a pivotal role in detecting abnormalities, it is important that the framework is sound and mimics the thought process of true radiologists. Because of the latter, we look to implement a model framework composed of multiple convolutional neural networks (CNNs), which will first diagnose the body parts and then feed another model constructed specifically for the given body part, ultimately returning the predicted label for an image. Not only do we look to constructing this model framework, but also we look to integrate it into a web application, enabling radiologist or data scientist to use. 
 
 ## Data Analysis
 
@@ -13,6 +13,15 @@ For preprocessing, we needed to determine a set structure for the images, since 
 Finally, the last step required is normalization with respect to the IMAGENET dataset, which has a mean of .456 and standard deviation of .225. This is required because we will be leveraging pre-trained models and this prevents vanishing gradients in the CNN.
 
 ## Task Analysis
+
+| “Domain” Task                                                                                   | Analytic Task(Low Level) | Search Task(Mid Level) | Analyze Task(High Level) |
+|-------------------------------------------------------------------------------------------------|--------------------------|------------------------|--------------------------|
+| Examine how the accuracy varies amongst body parts                                              | Compare                  | Lookup                 | Discover                 |
+| Examine the effects of hyper parameters on the performance metrics                              | Compare / Summarize      | Browse                 | Discover                 |
+| Observe how misclassified body parts perform in the abnormal models                             | Compare                  | Lookup                 | Discover                 |
+| Observe what key features are enabling the model to classify an image’s body and abnormal class | Identify                 | Explore                | Discover                 |
+| Given an x-ray image, determine if an abnormality is present                                    | Identify                 | Explore                | Annotate                 |
+| Given an x-ray image, determine the body part                                                   | Identify                 | Explore                | Annotate                 |
 
 Prior to constructing the model, we need to consider the tasks the users may require. In doing so, we will be able to generate all of the necessary information during the modeling step. We divide the type of users into two categories: data scientists and radiologist. The data scientists will be more focused on understanding how the models were constructed and different hyper parameters modified, where as the radiologist would be more concerned with the accuracy and how the model could aid them in detecting abnormalities. If we consider the tasks from a low, mid, and high level, we can see some clear differences. The data scientist would be more primarily focused on comparing performance, looking up small details, and discovering trends. The radiologist are concerned with identifying and annotating their unlabeled radiographs and detecting which aspects of the radiograph is being categorized as abnormal.
 
@@ -70,7 +79,7 @@ The approach for hyper parameter tuning follows the same as the previous model. 
 
  
 ## Design Process
-In terms of how to integrate this framework with an interactive visualization analytic system, we began with three preliminary sketches: a particle visualization, a hyper parameter tuning line chart, and a confusion wheel. 
+In terms of how to integrate this framework with a web application, we began with three preliminary sketches: a particle visualization, a hyper parameter tuning line chart, and a confusion wheel. 
 
 **Insert preliminary sketches here**
 
@@ -80,10 +89,13 @@ Also based on the removal of the confusion wheel, we needed to incorporate anoth
 
 **Insert first grad cam here**
 
-The heat map illustrated was intended to show which parts of the image are helping to determine the current classification, whether its body part or abnormality. Unfortunately, the above still needed to be tuned. Even though traditional heat maps use the color scheme as presented above, it is not recommended, as continuous variables should be encoded using the color saturation and luminance channel rather than color HUE. 
+The heat map illustrated was intended to show which parts of the image are helping to determine the current classification, whether its body part or abnormality. Unfortunately, the above still needed to be tuned. Even though traditional heat maps use the color scheme as presented above, it is not recommended, as continuous variables should be encoded using the color saturation and luminance channel rather than color HUE. Also, this needed to be coupled with the model interaction. This way the user understands why their image is being classified as is. 
 
-The particle visualization had a few minor issues that needed to be addressed as well. Initially, each image was going to be represented by a point mark; however, this created a great amount of occlusion and hindered the performance of the visualization such that run time was long. In order to remediate this problem, we made it so that every 10 images were encoded using the point mark. Next, we needed to allow a user to  
+The particle visualization had a few minor issues that needed to be addressed as well. Initially, each image was going to be represented by a point mark; however, this created a great amount of occlusion and hindered the performance of the visualization such that run time was long. In order to remediate this problem, we made it so that every 10 images were encoded using the point mark. Next, we needed to allow a user to visualize the distribution of the initial results from the body part classifier without creating too much cluster. This was best presented as a stacked bar chart, where the user could interact and explore the bar charts further, yet during usability testing it was suggested clicking on the bars was not intuitive. This was simple to fix such that we added a tool tip to let the users know they can gain further granular information by clicking on various visualizations. 
 
+Next, the hyper parameter chart needed to modified such that it needed a large amount of space to fix the occlusion amongst the lines; however,  by just increasing the graph, we are not utilizing our space efficiently. To fix this we enabled the users to increase the size if they chose to explore those certain hyper parameters. Also, since we used random search it didn't make sense for uses to toggle between hyper parameters rather this information could be shown via hovering. 
+
+Finally, after receiving all of the feedback, we made sure our visualizations linked and that enough information was given to the user. We provided sufficient information such that the user understands what he is given, but also made the visualization simple enough that is intuitive to operate
 
 
 ## Final Visualization
