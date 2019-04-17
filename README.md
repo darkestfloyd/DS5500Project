@@ -10,6 +10,8 @@ The dataset utilized for detecting abnormalities is the MURA dataset released by
 
 For preprocessing, we needed to determine a set structure for the images, since the images varied in terms of channels and size. Initially, we were going to operate with 3 channels since some of the images came in as RBG and we wanted to maintain as much granular information as possible, but upon further inspection, we realized that the RBG photos had the same value per channel. Due to this, we converted everything to gray scale. Next, the CNN models used determined the width and height. Although images do not need to be a fixed size for convolutions, in order to feed a dense layer, the convolutions must result in a fixed length vector. Given our final CNN models leveraged the Alex Net and Dense Net architecture, two transformations were applied. For the Alex Net model, images were scaled to 227 x 277, and for the Dense Net model, they were scaled to 224 x 224. In all each image was represented by 51,529/50,176 quantitative variables. Next, in order to extract more information, we applied a form of object segmentation called adaptive thresholding. Adaptive thresholding is able to intensify key features of radiographs [1], which will heavily aid in detecting abnormalities. We used a mean adaptive method with a binary threshold type, assigning a max value of 255 for pixels/variables that exceeded the calculated threshold.  The pixel neighborhood used to calculate the threshold was 11 with a constant of 2. Below are examples of our preprocessing steps:
 
+![alt text](images/preprocess.png)
+
 Finally, the last step required is normalization with respect to the IMAGENET dataset, which has a mean of .456 and standard deviation of .225. This is required because we will be leveraging pre-trained models and this prevents vanishing gradients in the CNN.
 
 ## Task Analysis
@@ -81,13 +83,13 @@ The approach for hyper parameter tuning follows the same as the previous model. 
 ## Design Process
 In terms of how to integrate this framework with a web application, we began with three preliminary sketches: a particle visualization, a hyper parameter tuning line chart, and a confusion wheel. 
 
-**Insert preliminary sketches here**
+![alt text](images/inital_sketches.png)
 
 The latter was eliminated immediately following initial project feedback, as although it was aesthetically appealing, the information was not conveyed in a straightforward manner. One of the key points introduced in the course is not to over-complicate simple information. Heeding this feedback, we incorporated the more traditional confusion matrix categorizing the records into  True Positive, True Negative, False Positive, or False Negative. In terms of this experiment, positive refers to abnormal. 
 
 Also based on the removal of the confusion wheel, we needed to incorporate another visualization that can capture the essence of the model. We needed a method that made the CNN models not black boxes. Because of this we introduced the gradient class activation mapping. The preliminary implementation is below:
 
-**Insert first grad cam here**
+![alt text](images/Hand_Grad_CAM.png)
 
 The heat map illustrated was intended to show which parts of the image are helping to determine the current classification, whether its body part or abnormality. Unfortunately, the above still needed to be tuned. Even though traditional heat maps use the color scheme as presented above, it is not recommended, as continuous variables should be encoded using the color saturation and luminance channel rather than color HUE. Also, this needed to be coupled with the model interaction. This way the user understands why their image is being classified as is. 
 
