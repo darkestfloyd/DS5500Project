@@ -132,14 +132,14 @@
 						<div id="particles" class="col-md-7">
 							<div class="row">
 								<div class="col-md-6">
-									<center><b>Body Classification</b>
+									<center><b>Body Classification </b>
 										<i class="fa fa-info-circle" content="AlexNet results. Click on a part for more details"></i></center>
 									<div class="row">
 										<div class="col-md-12" id="particle-viz"></div>
 									</div>
 								</div>
 								<div class="col-md-6">
-									<center><b>Abnormality Classification</b><i class="fa fa-info-circle" content="DenseNet results"></i></center>
+									<center><b>Abnormality Classification </b><i class="fa fa-info-circle" content="DenseNet results"></i></center>
 									<div class="row">
 										<div class="col-md-12" id="particle-focus-viz"></div>
 									</div>
@@ -210,9 +210,68 @@
 					</div>
 				</div>
 			</div>
+			<hr />
+			<div class="row">
+				<div class="col-md-12">
+					<center><h1>How does the network learn?</h1></center>
+					<blockquote>
+						<div class="row">
+							<p class="p">
+								Neural networks are generally considered to be a black-box which magically returns the desired output on some hyperparameter tuning. To understand more about how the Neural network learns about these images, we have implemented Grad Cam.
+							</p>
+							<p class="p">
+								Gradient-weighted Class Activation Mapping (Grad-CAM), uses the gradients of any target concept, flowing into the final convolutional layer to produce a coarse localization map highlighting the important regions in the image for predicting the concept. 
+							</p>
+						</div>
+					</blockquote>
+				</div>
+			</div>
+			<hr />
+			<div class="row">
+				<div class="container container-fluid">
+					<div class="row">
+						<div class="col-md-2">
+							<div class="row form-group">
+								<div class="col-md-12">
+									<select class="form-control" style="font-size: 12;" id='study_selection'>
+										<option value="0">All studies</option>
+										<option value="3">Finger</option>
+										<option value="7">Hand</option>
+										<option value="5">Wrist</option>
+										<option value="6">Forearm</option>
+										<option value="4">Elbow</option>
+										<option value="2">Humerus</option>
+										<option value="1">Shoulder</option>
+									</select> 
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-md-12">
+									<input type="file" style="font-size: 12;" class="form-control-file" id="radiograph_upload" name="upload" accept="image/png">
+								</div>
+							</div>
+							<div class="row form-group">
+								<button style="font-size: 12;" class="btn btn-danger form-control" onclick="generate_cams()">
+          							Generate
+        						</button>
+        					</div>
+        					<div class="row form-group">
+        						<div class="col-md-offset-4 col-md-4">
+        								<svg id="colorbar_svg" style:"margin-top: 10;"></svg>
+        						</div>
+        					</div>
+						</div>
+						<div class="col-md-10">
+							<div id="svg_div">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</body>
 	<script type="text/javascript" src="js/config.js"></script>
+	<script type="text/javascript" src="js/gradcam.js"></script>
 	<script type="text/javascript" src="js/tree.js"></script>
 	<script type="text/javascript" src="js/dispatch.js"></script>
 	<script type="text/javascript" src="js/particle.js"></script>
@@ -347,4 +406,34 @@
 			});
 		});
 	</script>
+
+	<script>
+	    var select_study = document.getElementById('study_selection');
+	    var file_upload = document.getElementById('radiograph_upload');
+	    var reader  = new FileReader();
+	    reader.onloadend = function () {
+	      d3.json(config.uploadAPI + '/' + reader.result, function(data) {
+	        study_data = data["alexNet"];
+	        class_data = data["denseNet"];
+	        updateCams_uploaded(study_data["path"], study_data["label"], class_data["path"],
+	                            class_data["label"]);
+	      });
+	    }
+
+	    function generate_cams() {
+	      if (file_upload.value != "") {
+	        // file uploaded 
+	        reader.readAsDataURL(file_upload.files[0]);
+	      } else {
+	        // option in dropdown
+	        d3.json(config.baseAPI + '/' + select_study.value, function(data){
+	          console.log(data);
+	          study_data = data["alexNet"];
+	          class_data = data["denseNet"];
+	          updateCams(study_data["paths"], study_data["true_label"], study_data["pred_label"],
+	                     class_data["paths"], class_data["true_label"], class_data["pred_label"]);
+	        });
+	      }
+	    }
+  	</script>
 </html>

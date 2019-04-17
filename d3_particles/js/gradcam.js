@@ -1,15 +1,16 @@
 var logger = 0;
 // define some dimensions
 var margin = {top: 10, bottom: 10, left: 10, right: 10, between: 70, sm_between: 20};
-var height = 730 - margin.top - margin.bottom,
-  width = 1100 - margin.left - margin.right;
+var height = 800 - margin.top - margin.bottom,
+  width = 800 - margin.left - margin.right;
 var groupCamWidth = (width - margin.between) / 2, groupCamHeight = height;
-var mainCamWidth = 400, mainCamHeight = 400;
-var subCamWidth = 100, subCamHeight = 100;
+var mainCamWidth = 300, mainCamHeight = 300;
+var subCamWidth = 60, subCamHeight = 60;
 
 // add the main svg
 var svg = d3.select("#svg_div")
   .append("svg")
+  .style("position", "relative")
   .attr("id", "gradcam_svg")
   .attr("height", height)
   .attr("width", width)
@@ -17,7 +18,7 @@ var svg = d3.select("#svg_div")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 var colorbar_svg = d3.select("#colorbar_svg")
-var colorbar_def = colorbar_svg.append("defs");
+var colorbar_def = colorbar_svg.style("position", "relative").append("defs");
 var linearGradient = colorbar_def.append("linearGradient").attr("id", "linear-gradient");
 
 linearGradient
@@ -37,7 +38,7 @@ linearGradient.append("stop")
 //Draw the rectangle and fill with gradient
 colorbar_svg.append("rect")
     .attr("width", 30)
-    .attr("height", 200)
+    .attr("height", 100)
     .style("fill", "url(#linear-gradient)");
 
 
@@ -126,6 +127,7 @@ function addGradView(container, cam_paths, id_prefix,
       .attr("xlink:href", cam_path)
       .attr("x", cam_pos.x).attr("y", cam_pos.y)
       .on("click", function(_, __, obj) { // on click
+        obj = d3.select(this)[0]; // ~AS - compatibility fix
         obj = obj[0]
         cam = obj.id.slice(0, 8)
         selected = +obj.id[obj.id.length - 1];
@@ -150,8 +152,8 @@ function addGradView(container, cam_paths, id_prefix,
     if (i > 0) {
       container.append("text")
         .attr("id", id_prefix + "_SUBTEXT_" + i)
-        .attr("x", cam_pos.x + 45)
-        .attr("y", cam_pos.y + 130)
+        .attr("x", cam_pos.x + subCamWidth/2)
+        .attr("y", cam_pos.y + 1.5 * subCamHeight)
         .attr("font-size", "15px")
         .text(function(d) { return i * 5; });
     }

@@ -10,6 +10,7 @@ import pickle
 from resources.AlexNetViz import AlexNetViz
 from resources.DenseNetViz import DenseNetViz
 from resources.GradCAMViz import GradCAMViz
+from resources.GradCAMUpload import GradCAMUpload
 
 app = Flask(__name__)
 api = Api(app)
@@ -86,6 +87,9 @@ if __name__ == '__main__':
                 'body_parts' : body_parts,
                 'path' : path,
                 'part_imgs' : part_imgs}); 
+
+    api.add_resource(GradCAMUpload,
+            '/upload/<path:data>');
 
     app.run(debug = True)
 
