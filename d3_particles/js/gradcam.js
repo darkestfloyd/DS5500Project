@@ -18,6 +18,7 @@ var svg = d3.select("#svg_div")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 var colorbar_svg = d3.select("#colorbar_svg")
+  .attr("transform", `translate(${groupCamWidth, 560})`)
 var colorbar_def = colorbar_svg.style("position", "relative").append("defs");
 var linearGradient = colorbar_def.append("linearGradient").attr("id", "linear-gradient");
 
@@ -37,10 +38,22 @@ linearGradient.append("stop")
     .attr("stop-color", "#00FC80"); //dark blue
 //Draw the rectangle and fill with gradient
 colorbar_svg.append("rect")
+    .attr("transform", `translate(20, 15)`)
     .attr("width", 30)
     .attr("height", 100)
     .style("fill", "url(#linear-gradient)");
 
+var y = d3.scale.linear().range([100, 0]).domain([0, 255]);
+var yAxis = d3.svg.axis().scale(y).orient("right").ticks(2);
+colorbar_svg.append("g")
+  .attr("class", "y axis")
+  .attr("transform", `translate(50, 15)`)
+  .call(yAxis)
+  .append("text")
+  .attr("x", -15)
+  .attr("y", -15)
+  .attr("dy", "1em")
+  .style("text-anchor", "middle").text("Activation");
 
 // this function will add a "GradCamView" to a container. This includes the main image with the
 // small multiples and all the related text. 
