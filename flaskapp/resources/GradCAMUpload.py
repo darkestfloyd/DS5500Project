@@ -12,9 +12,9 @@ class GradCAMUpload(Resource):
 
     def get(self, data):
 
-        original_image = '../temp/input_image.png'
-        alex_cam_image = '../temp/alex_cam.jpg'
-        dense_cam_image = '../temp/dense_cam.jpg'
+        original_image = '../d3_gradcam/cams/temp/input_image.png'
+        alex_cam_image = '../d3_gradcam/cams/temp/alex_cam.jpg'
+        dense_cam_image = '../d3_gradcam/cams/temp/dense_cam.jpg'
 
         decoded = data.split(',', 1)[1]
         with open(original_image, 'wb') as f:
@@ -26,7 +26,7 @@ class GradCAMUpload(Resource):
         class_label = denseCAM(original_image, dense_cam_image)
         print("predicted class: {0}".format(class_label))
 
-        return {"alexNet": {"path": alex_cam_image, "label": class_label}, 
-                "denseNet": {"path": dense_cam_image, "label": study_label}}
+        return {"alexNet": {"path": 'cams/temp/alex_cam.jpg', "label": class_label}, 
+                "denseNet": {"path": 'cams/temp/dense_cam.jpg', "label": study_label}}
         
 
