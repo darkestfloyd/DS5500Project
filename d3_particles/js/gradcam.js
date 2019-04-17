@@ -18,7 +18,7 @@ var svg = d3.select("#svg_div")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 var colorbar_svg = d3.select("#colorbar_svg")
-var colorbar_def = colorbar_svg.append("defs");
+var colorbar_def = colorbar_svg.style("position", "relative").append("defs");
 var linearGradient = colorbar_def.append("linearGradient").attr("id", "linear-gradient");
 
 linearGradient
@@ -38,7 +38,7 @@ linearGradient.append("stop")
 //Draw the rectangle and fill with gradient
 colorbar_svg.append("rect")
     .attr("width", 30)
-    .attr("height", 200)
+    .attr("height", 100)
     .style("fill", "url(#linear-gradient)");
 
 
@@ -127,6 +127,7 @@ function addGradView(container, cam_paths, id_prefix,
       .attr("xlink:href", cam_path)
       .attr("x", cam_pos.x).attr("y", cam_pos.y)
       .on("click", function(_, __, obj) { // on click
+        obj = d3.select(this)[0]; // ~AS - compatibility fix
         obj = obj[0]
         cam = obj.id.slice(0, 8)
         selected = +obj.id[obj.id.length - 1];
