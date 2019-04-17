@@ -8,12 +8,12 @@ class GradCAMViz(Resource):
     def __init__(self, **kwargs):
         self.data = kwargs['data']
         self.body_parts = kwargs['body_parts']
+        self.path = kwargs['path']
+        self.part_imgs = kwargs['part_imgs']
         self.img_id = 0
         self.prefix = 'CAM'
-        self.iter = [5, 10, 15, 20]
-        self.path = kwargs['path']
+        self.epoch = [5, 10, 15, 20]
         self.abnClass = ['Normal', 'Abnormal']
-        self.part_imgs = kwargs['part_imgs']
 
     def get(self, category):
         alexNet = {}
@@ -23,14 +23,21 @@ class GradCAMViz(Resource):
             self.category = int(category) - 1
             self.part = self.body_parts[self.category]
             self.img_id = str(random.randint(0, 5))
-            self.imgs = [(self.prefix + self.img_id + '_' + str(i) + '.jpg') for i in self.iter]
+
+            #image names based on epoch 
+            self.imgs = [(self.prefix + self.img_id + '_' + str(i) + '.jpg') for i in self.epoch]
+
+            #image path
             self.img1_path = [os.path.join(self.path, self.body_parts[self.category], 'Alexnet_Images', img)
                                 for img in self.imgs]
+
+            #Choode a random model
             self.model_id = 'Model' + str(random.randint(1,16))
             dkey = self.body_parts[self.category] + '_' + self.model_id
             df = self.data[dkey]
+
             #generate paths
-            self.img2_path = [os.path.join(self.path, self.body_parts[self.category], self.model_id, img)
+            self.img2_path = [os.path.join(self.path, self.body_parts[self.category], self.model_id, 'Images', img)
                              for img in self.imgs]
             #generate json
             idx = df[df.Path == self.part_imgs[self.part][int(self.img_id)]].index.astype(int)[0]
