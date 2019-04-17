@@ -4,100 +4,100 @@ var treeData = [
     "parent": "null",
     "children": [
       {
-        "name": "Elbow ( 94.19% )",
+        "name": "Elbow - 94.19% ",
         "parent": "Image",
         "children": [
           {
-            "name": "Normal",
-            "parent": "Elbow"
+            "name": "Abnormal - 71.76% ",
+            "parent": "Elbow - 94.19% "
           },
           {
-            "name": "Abnormal",
-            "parent": "Elbow"
+            "name": "Normal - 59.31% ",
+            "parent": "Elbow - 94.19% "
           }
         ]
       },
       {
-        "name": "Finger ( 93.28% )",
+        "name": "Finger - 93.28% ",
         "parent": "Image",
         "children": [
           {
-            "name": "Normal",
-            "parent": "Elbow"
+            "name": "Abnormal - 78.05% ",
+            "parent": "Finger - 93.28% "
           },
           {
-            "name": "Abnormal",
-            "parent": "Elbow"
+            "name": "Normal - 59.92% ",
+            "parent": "Finger - 93.28% "
           }
         ]
       },
       {
-        "name": "Forearm ( 76.74% )",
+        "name": "Forearm - 76.74% ",
         "parent": "Image",
         "children": [
           {
-            "name": "Normal",
-            "parent": "Elbow"
+            "name": "Abnormal - 77.10% ",
+            "parent": "Forearm - 76.74% "
           },
           {
-            "name": "Abnormal",
-            "parent": "Elbow"
+            "name": "Normal - 61.59% ",
+            "parent": "Forearm - 76.74% "
           }
         ]
       },
       {
-        "name": "Hand ( 97.39% )",
+        "name": "Hand - 97.39% ",
         "parent": "Image",
         "children": [
           {
-            "name": "Normal",
-            "parent": "Elbow"
+            "name": "Abnormal - 74.02% ",
+            "parent": "Hand - 97.39% "
           },
           {
-            "name": "Abnormal",
-            "parent": "Elbow"
+            "name": "Normal - 56.19% ",
+            "parent": "Hand - 97.39% "
           }
         ]
       },
       {
-        "name": "Humerus ( 80.90% )",
+        "name": "Humerus - 80.90% ",
         "parent": "Image",
         "children": [
           {
-            "name": "Normal",
-            "parent": "Elbow"
+            "name": "Abnormal - 68.18% ",
+            "parent": "Humerus - 80.90% "
           },
           {
-            "name": "Abnormal",
-            "parent": "Elbow"
+            "name": "Normal - 79.84% ",
+            "parent": "Humerus - 80.90% "
           }
         ]
       },
       {
-        "name": "Shoulder - ( 99.29% )",
+        "name": "Shoulder - 99.29% ",
         "parent": "Image",
         "children": [
           {
-            "name": "Normal",
-            "parent": "Elbow"
+            "name": "Abnormal - 79.33% ",
+            "parent": "Shoulder - 99.29% "
           },
           {
-            "name": "Abnormal",
-            "parent": "Elbow"
+            "name": "Normal - 54.17% ",
+            "parent": "Shoulder - 99.29% "
           }
         ]
       },
       {
-        "name": "Wrist ( 95.29% )",
+        "name": "Wrist - 95.29% ",
         "parent": "Image",
         "children": [
           {
-            "name": "Normal",
-            "parent": "Elbow"
+            "name": "Abnormal - 68.87% ",
+            "parent": "Wrist - 95.29% "
           },
           {
-            "name": "Abnormal",
-            "parent": "Elbow"
+            "name": "Normal - 74.92% ",
+            "parent": "Wrist - 95.29% "
           }
         ]
       }
