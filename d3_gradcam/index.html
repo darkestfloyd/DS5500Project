@@ -34,7 +34,7 @@
         </select> 
         <br>
         <input type="file" id="radiograph_upload" name="upload"
-       accept="image/jpg" style="margin-top: 10;">
+       accept="image/png" style="margin-top: 10;">
         <button style="margin-top: 10;" onclick="generate_cams()">
           Generate
         </button>
@@ -51,11 +51,18 @@
   <script>
     var select_study = document.getElementById('study_selection');
     var file_upload = document.getElementById('radiograph_upload');
+    var reader  = new FileReader();
+    reader.onloadend = function () {
+      d3.json('http://127.0.0.1:5000/upload' + '/' + reader.result);
+    }
+
+var logger = 0;
     function generate_cams() {
       if (file_upload.value != "") {
-        // 
-        console.log("Add image: " + file_upload.value);
+        // file uploaded 
+        reader.readAsDataURL(file_upload.files[0]);
       } else {
+        // option in dropdown
         d3.json('http://127.0.0.1:5000/main' + '/' + select_study.value).then(function(data){
           console.log(data);
           study_data = data["alexNet"];
