@@ -4,7 +4,7 @@ var treeData = [
     "parent": "null",
     "children": [
       {
-        "name": "Elbow",
+        "name": "Elbow ( 94.19% )",
         "parent": "Image",
         "children": [
           {
@@ -18,7 +18,7 @@ var treeData = [
         ]
       },
       {
-        "name": "Finger",
+        "name": "Finger ( 93.28% )",
         "parent": "Image",
         "children": [
           {
@@ -32,7 +32,7 @@ var treeData = [
         ]
       },
       {
-        "name": "Forearm",
+        "name": "Forearm ( 76.74% )",
         "parent": "Image",
         "children": [
           {
@@ -46,7 +46,7 @@ var treeData = [
         ]
       },
       {
-        "name": "Hand",
+        "name": "Hand ( 97.39% )",
         "parent": "Image",
         "children": [
           {
@@ -60,7 +60,7 @@ var treeData = [
         ]
       },
       {
-        "name": "Humerus",
+        "name": "Humerus ( 80.90% )",
         "parent": "Image",
         "children": [
           {
@@ -74,7 +74,7 @@ var treeData = [
         ]
       },
       {
-        "name": "Shoulder",
+        "name": "Shoulder - ( 99.29% )",
         "parent": "Image",
         "children": [
           {
@@ -88,7 +88,7 @@ var treeData = [
         ]
       },
       {
-        "name": "Wrist",
+        "name": "Wrist ( 95.29% )",
         "parent": "Image",
         "children": [
           {
