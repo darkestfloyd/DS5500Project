@@ -114,5 +114,7 @@ Next, we incorporate interactivity such that the stacked bar chart can be clicke
 
 The final linked visualizations are the hyper parameter tuning charts, which enable the user to modify any of the abnormality detection models. A given set of hyper parameters can be considered λ such that each λ is composed of a learning rate and weight decay. The line chart was chosen because we are encoding two continuous variables. This enables the user to see a trend. Also, for discriminability purposes we highlight the active hyper parameter model as red which immediately is drawn to the eye.
 
+![alt text](images/hyperparameter.png)
+
 ## Conclusion
 
