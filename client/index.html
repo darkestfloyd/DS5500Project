@@ -251,9 +251,14 @@
 								</div>
 							</div>
 							<div class="row form-group">
-								<button style="font-size: 12;" class="btn btn-danger form-control" onclick="generate_cams()">
-          							Generate
-        						</button>
+								<div class="col-md-12">
+									<button style="font-size: 12;" class="btn btn-danger form-control" onclick="generate_cams()">
+	          							Generate
+	        						</button>
+	        						<center><div id="spinner" style="opacity: 0; margin-top: 10px;" class="spinner-border text-danger" role="status">
+							  			<center><span class="sr-only">Loading...</span></center>
+									</div></center>
+								</div>
         					</div>
         					<div class="row form-group">
         						<div class="col-md-offset-4 col-md-4">
@@ -412,7 +417,9 @@
 	    var file_upload = document.getElementById('radiograph_upload');
 	    var reader  = new FileReader();
 	    reader.onloadend = function () {
+	    	d3.select("#spinner").transition().style("opacity", 1);
 	      d3.json(config.uploadAPI + '/' + reader.result, function(data) {
+	      	d3.select("#spinner").transition().style("opacity", 0);
 	        study_data = data["alexNet"];
 	        class_data = data["denseNet"];
 	        updateCams_uploaded(study_data["path"], study_data["label"], class_data["path"],
