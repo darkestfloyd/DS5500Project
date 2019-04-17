@@ -38,6 +38,8 @@
         <button style="margin-top: 10;" onclick="generate_cams()">
           Generate
         </button>
+
+        <svg id="colorbar_svg" style:"margin-top: 10;">
        </div>    
        <!-- cams -->
       <div id="svg_div" style="text-align:center;">
@@ -62,7 +64,6 @@
       });
     }
 
-var logger = 0;
     function generate_cams() {
       if (file_upload.value != "") {
         // file uploaded 

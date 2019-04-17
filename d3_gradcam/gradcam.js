@@ -16,6 +16,31 @@ var svg = d3.select("#svg_div")
   .append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
+var colorbar_svg = d3.select("#colorbar_svg")
+var colorbar_def = colorbar_svg.append("defs");
+var linearGradient = colorbar_def.append("linearGradient").attr("id", "linear-gradient");
+
+linearGradient
+    .attr("x1", "0%")
+    .attr("y1", "100%")
+    .attr("x2", "0%")
+    .attr("y2", "0%");
+//Set the color for the start (0%)
+linearGradient.append("stop")
+    .attr("offset", "0%")
+    .attr("stop-color", "#0102FB") //light blue
+
+//Set the color for the end (100%)
+linearGradient.append("stop")
+    .attr("offset", "100%")
+    .attr("stop-color", "#00FC80"); //dark blue
+//Draw the rectangle and fill with gradient
+colorbar_svg.append("rect")
+    .attr("width", 30)
+    .attr("height", 200)
+    .style("fill", "url(#linear-gradient)");
+
+
 // this function will add a "GradCamView" to a container. This includes the main image with the
 // small multiples and all the related text. 
 //
@@ -36,6 +61,7 @@ function addGradView(container, cam_paths, id_prefix,
 
   // add the line acting as x axis
   container.append("line")
+    .attr("id", id_prefix + "_axis")
     .attr("x1", subCamStartX - 10)
     .attr("y1", subCamStartY + subCamHeight + 10)
     .attr("x2", groupCamWidth - subCamStartX + 10)
@@ -45,6 +71,7 @@ function addGradView(container, cam_paths, id_prefix,
 
   // add "Iteration" text 
   container.append("text")
+      .attr("id", id_prefix + "_iter")
       .attr("y", subCamStartY + subCamHeight + 60)
       .attr("x", (groupCamWidth / 2) - 40)
       .attr("font-size", "18px")
@@ -122,6 +149,7 @@ function addGradView(container, cam_paths, id_prefix,
     // if small multiple, also add its iteration
     if (i > 0) {
       container.append("text")
+        .attr("id", id_prefix + "_SUBTEXT_" + i)
         .attr("x", cam_pos.x + 45)
         .attr("y", cam_pos.y + 130)
         .attr("font-size", "15px")
@@ -163,6 +191,30 @@ function updateCams_uploaded(study_path, study_label, class_path, class_label) {
 
   d3.select("#studyCam_subtitle").text("Predicted label: " + study_label);
   d3.select("#classCam_subtitle").text("Predicted label: " + class_label);
+
+  // hide all others cams and lines
+  // study
+  d3.select("#studyCam_SUB_1").style("opacity", 0);
+  d3.select("#studyCam_SUB_2").style("opacity", 0);
+  d3.select("#studyCam_SUB_3").style("opacity", 0);
+  d3.select("#studyCam_SUB_4").style("opacity", 0);
+
+  // class
+  d3.select("#classCam_SUB_1").style("opacity", 0);
+  d3.select("#classCam_SUB_2").style("opacity", 0);
+  d3.select("#classCam_SUB_3").style("opacity", 0);
+  d3.select("#classCam_SUB_4").style("opacity", 0);
+
+  // others
+  d3.select("#studyCAM_axis").style("opacity", 0);
+  d3.select("#classCAM_axis").style("opacity", 0);
+  d3.select("#studyCAM_iter").style("opacity", 0);
+  d3.select("#classCAM_iter").style("opacity", 0);
+
+  for (i = 1; i < 5; ++i) {
+    d3.select("#studyCAM_SUBTEXT_" + i).style("opacity", 0);
+    d3.select("#classCAM_SUBTEXT_" + i).style("opacity", 0);
+  }
 }
 
 // adds a container for the left gradcam and populate

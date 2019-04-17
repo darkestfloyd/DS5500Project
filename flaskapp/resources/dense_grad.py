@@ -24,7 +24,7 @@ device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
     ## functions 
 
-def denseCAM(img_path, out_path):
+def denseCAM(img_path, out_path, model_path):
     ######### densenet gradcam  ################
     def hook_feature(module, input, output):
         features_blobs.append(output.data.cpu().numpy())
@@ -48,8 +48,6 @@ def denseCAM(img_path, out_path):
     normalize = transforms.Normalize(
         mean=[0.456],
         std= [0.225]
-       #mean=[0.485, 0.456, 0.406],
-       #std=[0.229, 0.224, 0.225]
     )
     preprocess = transforms.Compose([
        transforms.Resize((224,224)),
@@ -67,7 +65,8 @@ def denseCAM(img_path, out_path):
     #Adjust to grayscale = 1 channel. Requires gradient is True by default
     dense_net169.classifier = nn.Linear(in_features=1664, out_features=1, bias=True)
     dense_net169.to(device)
-    dense_net169.load_state_dict(torch.load('../models/densenet_elbow.pth', map_location='cpu'))
+    print("model path:", model_path)
+    dense_net169.load_state_dict(torch.load(model_path, map_location='cpu'))
     
     ## add gradcam
     finalconv_name = 'features'
