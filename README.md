@@ -106,15 +106,21 @@ The final visualization is depicted below:
 
 ![alt text](images/Model.png)
 
-The user is able to clearly see a summary of the total results - using the best models - in the confusion matrix. With every point mark representing 10 images, we encode their true body part label using the hue color channel. This hue color channel is also evident in the stacked bar charts, which shows images classified correctly and those that are not. To encode their predicted body part label, we use the spatial position and motion channel. By doing so, we have utilized the top three methods for encoding categorical variables. 
-
-Next, we incorporate interactivity such that the stacked bar chart can be clicked on to explore the misclassification distribution further. By exploring each body part specifically, we enable the confusion matrix to be updated. 
+The user is able to clearly see a summary of the total results - using the best models - in the confusion matrix. With every point mark representing 10 images, we encode their true body part label using the hue color channel. This hue color channel is also evident in the stacked bar charts, which shows images classified correctly and those that are not. To encode their predicted body part label, we use the spatial position and motion channel. By doing so, we have utilized the top three methods for encoding categorical variables. To encode the precision we use the line mark and length channel. The longer the line, the more precise the body part classification is. We then incorporate interactivity such that the stacked bar chart can be clicked on to explore the misclassification distribution further. By exploring each body part specifically, we enable the confusion matrix to be updated. 
 
 ![alt text](images/Model_Overview.png)
 
 The final linked visualizations are the hyper parameter tuning charts, which enable the user to modify any of the abnormality detection models. A given set of hyper parameters can be considered λ such that each λ is composed of a learning rate and weight decay. The line chart was chosen because we are encoding two continuous variables. This enables the user to see a trend. Also, for discriminability purposes we highlight the active hyper parameter model as red which immediately is drawn to the eye.
 
 ![alt text](images/hyperparameter.png)
+
+Finally, to understand more about how the Neural network learns about these images, we have implemented Grad Cam.
+
+![alt text](images/grad_cam.png)
+
+Gradient-weighted Class Activation Mapping (Grad-CAM), uses the gradients of any target concept, flowing into the final convolutional layer to produce a coarse localization map highlighting the important regions in the image for predicting the concept. Since it is continuous, we encoded the intensity using saturation and luminance. We even incorporated a means of interacting with the user. They can load any image, and see why our models are classifying it as is.
+
+![alt text](images/grad_interact.png)
 
 ## Conclusion
 
