@@ -118,13 +118,14 @@ Finally, to understand more about how the Neural network learns about these imag
 
 ![alt text](images/grad_cam.png)
 
-Gradient-weighted Class Activation Mapping (Grad-CAM), uses the gradients of any target concept, flowing into the final convolutional layer to produce a coarse localization map highlighting the important regions in the image for predicting the concept. Since it is continuous, we encoded the intensity using saturation and luminance. We even incorporated a means of interacting with the user. They can load any image, and see why our models are classifying it as is.
+Gradient-weighted Class Activation Mapping (Grad-CAM), uses the gradients of any target concept, flowing into the final convolutional layer to produce a coarse localization map highlighting the important regions in the image for predicting the concept. Since it is continuous, we encoded the intensity using saturation and luminance. The epochs were encoded using the horizontal spatial position such that it is clear to the user that the images should be improving over time. 
 
+Finally, we incorporated a means of interacting with the user. They can load any image, and have our models run on it. They will be able to see the class assignment and the reason why the class was assigned.
 ![alt text](images/grad_interact.png)
 
 ## Conclusion
 
-The visualization tool has been smoothly integrated with our models, conveying all information required to address the tasks defined
+The visualization tool has been smoothly integrated with our models, conveying all information required to address the tasks defined. Unforunately, there is room for improvement regarding accuracy. If given more time, we would be able to run for my epochs instead of just 20. Also, due to processing limiations we had to limit our batch size. If increased, we strongly believe it would have performed better. 
 
 All design choices have leveraged course material, including marks, channels, linking, and hovering.
 
