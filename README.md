@@ -123,6 +123,19 @@ Gradient-weighted Class Activation Mapping (Grad-CAM), uses the gradients of any
 Finally, we incorporated a means of interacting with the user. They can load any image, and have our models run on it. They will be able to see the class assignment and the reason why the class was assigned.
 ![alt text](images/grad_interact.png)
 
+### Packages Used
+
+flask
+flask-restful
+flask-cors
+pandas
+sklearn
+torchvision
+user requests
+libSM 
+libXrender 
+libXext
+
 ## Conclusion
 
 The visualization tool has been smoothly integrated with our models, conveying all information required to address the tasks defined. Our visualization clear depicts the flow of our model and its results. We also incorporate a means of shedding light on how the model operates. Unforunately, there is room for improvement regarding accuracy. If given more time, we would be able to run for my epochs instead of just 20. Also, due to processing limiations we had to limit our batch size. If increased, we strongly believe it would have performed better. From a visualization standpoint, we could add an option for the user to choose a color map for the GradCAM heatmaps. This option would aid users who are visually impaired with some sort of color blindness. Overall, our tool is effective but could even be better. All design choices have leveraged course material, including marks, channels, linking, and hovering.
