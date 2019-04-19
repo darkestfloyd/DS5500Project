@@ -126,14 +126,23 @@ Finally, we incorporated a means of interacting with the user. They can load any
 ### Packages Used
 
 flask
+
 flask-restful
+
 flask-cors
+
 pandas
+
 sklearn
+
 torchvision
+
 user requests
+
 libSM 
+
 libXrender 
+
 libXext
 
 ## Conclusion
