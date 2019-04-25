@@ -1,4 +1,10 @@
-# Mura Classification Visualization Tool
+---
+title: "Mura Classification Visualization Tool"
+output: 
+  html_document:
+    toc: true
+---
+
 
 ## Motivation
 
