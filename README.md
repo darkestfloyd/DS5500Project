@@ -1,5 +1,9 @@
 # Mura Classification Visualization Tool
 
+The application is hosted at: http://ec2-3-212-216-62.compute-1.amazonaws.com/
+
+Video demonstration of the tool: https://youtu.be/JmPMNZbUzUs
+
 ## Motivation
 
 Large high scale musculoskeletal radiographs have played a pivotal part in the intersection of machine learning and the field of medicine.  Existing research leverages radiographs as input data for various machine-learning frameworks in order to help medical practitioners detect diseases at early stages (ex. fractures, cancer, etc.). With radiographs playing a pivotal role in detecting abnormalities, it is important that the framework is sound and mimics the thought process of true radiologists. Because of the latter, we look to implement a model framework composed of multiple convolutional neural networks (CNNs), which will first diagnose the body parts and then feed another model constructed specifically for the given body part, ultimately returning the predicted label for an image. Not only do we look to constructing this model framework, but also we look to integrate it into a web application, enabling radiologist or data scientist to use. 
@@ -148,7 +152,3 @@ libXext
 ## Conclusion
 
 The visualization tool has been smoothly integrated with our models, conveying all information required to address the tasks defined. Our visualization clear depicts the flow of our model and its results. We also incorporate a means of shedding light on how the model operates. Unforunately, there is room for improvement regarding accuracy. If given more time, we would be able to run for my epochs instead of just 20. Also, due to processing limiations we had to limit our batch size. If increased, we strongly believe it would have performed better. From a visualization standpoint, we could add an option for the user to choose a color map for the GradCAM heatmaps. This option would aid users who are visually impaired with some sort of color blindness. Overall, our tool is effective but could even be better. All design choices have leveraged course material, including marks, channels, linking, and hovering.
-
-The application is hosted at: http://ec2-3-212-216-62.compute-1.amazonaws.com/
-
-Video demonstration of the tool: https://youtu.be/JmPMNZbUzUs
